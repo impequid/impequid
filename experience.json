@@ -1,0 +1,6 @@
+{
+    "name": "impequid",
+    "script": "app.js",
+    "dependencies": ["express", "socket.io", "mongo-session", "user"],
+    "debug": true
+}
