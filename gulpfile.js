@@ -4,6 +4,7 @@ var rename = require('gulp-rename');
 var reactify = require('reactify');
 var download = require('gulp-download');
 var runSequence = require('run-sequence');
+var watch = require('gulp-watch');
 
 var path = {
 	HTML: 'web/src/index.html',
@@ -11,18 +12,27 @@ var path = {
 	OUT: 'build.js',
 	MINIFIED_OUT: 'build.min.js',
 
+	IMAGES: ['web/src/images/**/*'],
+	DEST_IMAGES: 'web/dist/images',
+
 	DEST: 'web/dist',
 	ENTRY_POINT: 'web/src/components/main.jsx',
 
 	DOWNLOADS: 'web/lib',
 
 	semanticUI: 'web/lib/semantic.min.js',
-	jQuery: 'web/lib/jquery.min.js'
+	jQuery: 'web/lib/jquery.min.js',
+
+	AUTOBUILD: 'web/src/**/*',
+
+	FONT: 'web/dist/themes/default/assets/fonts/'
 };
 
 var url = {
 	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.js',
-	jQuery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js'
+	jQuery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
+	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.css',
+	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/themes/default/assets/fonts/icons.woff2'
 };
 
 var browserifyArguments = {
@@ -52,6 +62,20 @@ gulp.task('downloadJQuery', function () {
 		.pipe(gulp.dest(path.DOWNLOADS));
 });
 
+gulp.task('downloadSemanticCSS', function () {
+	return download(url.semanticUICSS)
+		.pipe(rename(function (path) {
+			path.basename = 'semantic';
+			path.extname = '.css';
+		}))
+		.pipe(gulp.dest(path.DEST));
+});
+
+gulp.task('downloadSemanticFont', function () {
+	return download(url.semanticUIFont)
+		.pipe(gulp.dest(path.FONT));
+});
+
 gulp.task('build', function () {
 	return gulp.src(path.ENTRY_POINT)
 		.pipe(browserify(browserifyArguments))
@@ -62,19 +86,48 @@ gulp.task('build', function () {
 		.pipe(gulp.dest(path.DEST));
 });
 
-gulp.task('copyHTML', function (callback) {
-	callback();
+gulp.task('copyHTML', function () {
+	return gulp.src(path.HTML)
+		.pipe(gulp.dest(path.DEST));
 });
 
 gulp.task('copyImages', function (callback) {
-	callback();
+	return gulp.src(path.IMAGES)
+		.pipe(gulp.dest(path.DEST_IMAGES));
 });
 
 gulp.task('default', function (callback) {
-	runSequence(
+	return runSequence(
 		['copyHTML', 'copyImages'],
-		['downloadSemantic', 'downloadJQuery'],
+		['downloadSemantic', 'downloadJQuery', 'downloadSemanticCSS', 'downloadSemanticFont'],
 		'build',
 		callback
 	);
 });
+
+gulp.task('nodownload', function (callback) {
+	return runSequence(
+		['copyHTML', 'copyImages'],
+		'build',
+		callback
+	);
+});
+
+gulp.task('autobuild', function (cb) {
+	watch(path.AUTOBUILD, {ignoreInitial: false}, function() {
+    	gulp.start('default');
+	});
+});
+
+gulp.task('autobuildnodownload', function (cb) {
+	watch(path.AUTOBUILD, {ignoreInitial: false}, function() {
+    	gulp.start('nodownload');
+	});
+});
+
+// gulp.task('autoBuild', function () {
+// 	watch(path.AUTOBUILD);
+// 	// return gulp.src(path.AUTOBUILD)
+// 	// 	.pipe(watch(path.AUTOBUILD, {ignoreInitial: false}, ['default']))
+// 	// 	.pipe(gulp.dest(path.DEST));
+// });

@@ -1,6 +1,0 @@
-{
-    "name": "impequid",
-    "script": "index.js",
-    "dependencies": ["express", "socket.io"],
-    "debug": true
-}

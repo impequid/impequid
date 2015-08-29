@@ -1,0 +1,3 @@
+{
+    "ignore": ["web/*", "node_modules/*", ".git/*"]
+}
