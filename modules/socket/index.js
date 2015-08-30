@@ -6,6 +6,7 @@ var sharedSession = require('../sessions').shared;
 
 // require socket routes
 var session = require('./session');
+var token = require('./token');
 
 // set up log
 var log = require('../log').createNamespace({
@@ -28,22 +29,27 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
+		console.log(subdomain, socket.handshake.session);
 		if (subdomain === 'os') {
 			socket.on('session:login', function (data, callback) {
-				session.login(data, socket, callback);
+				session.login(socket, data, callback);
 			});
 			socket.on('session:logout', function (callback) {
 				session.logout(socket, callback);
 			});
 			socket.on('session:register', function (data, callback) {
-				session.register(data, socket, callback);
+				session.register(socket, data, callback);
 			});
 			socket.on('session:verify', function (callback) {
 				session.verify(socket, callback);
 			});
+			socket.on('token:create', function (app, callback) {
+				token.create(socket, app, callback);
+			});
 		} else {
-			socket.on('session:*', function (data, callback) {
-				console.log(subdomain, 'not main subdomain');
+			socket.on('token:digest', function (app, callback) {
+				console.log('digest', socket.handshake.session);
+				token.digest(socket, app, callback);
 			});
 		}
 		socket.on('error', function (err) {

@@ -3,3 +3,4 @@ web/dist/
 web/lib/
 log/
 Thumbs.db
+apps/*/web/dist

@@ -18,5 +18,11 @@ module.exports = {
 	},
 	host: {
 		name: 'dodekeract.report'
+	},
+	tokens: {
+		time: 60000
+	},
+	apps: {
+		path: 'apps'
 	}
 }

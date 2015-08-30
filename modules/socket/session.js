@@ -2,7 +2,7 @@
 var db = require('../db');
 var crypt = require('../crypto');
 
-function register (data, socket, callback) {
+function register (socket, data, callback) {
 	if (!data || !(data.secret && data.password && data.username && data.email)) {
 		callback(true);
 	} else if ((data.secret === 'cyka' && data.password.length >= 8)) {
@@ -24,7 +24,7 @@ function register (data, socket, callback) {
 	}
 }
 
-function login (data, socket, callback) {
+function login (socket, data, callback) {
 	if (data && data.email && data.password) {
 		db.model.User.findOne({email: data.email}, 'password salt username', function(err, user) {
 			if (!user) {

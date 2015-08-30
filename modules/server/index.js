@@ -21,17 +21,29 @@ var log = require('../log').createNamespace({
 // import from main module
 var root = process.mainModule.exports.root;
 
-//------------------------------apps------------------------------//
-
+// core
 var osApp = require('./os.js');
-var mainApp = express();
-var homeApp = express();
+
+// apps
+
+var appNames = fs.readdirSync(config.apps.path).filter(function(file) {
+	return fs.statSync(path.join(config.apps.path, file)).isDirectory();
+});
+var apps = {};
+
+for (var i = 0; i < appNames.length; i++) {
+	var name = appNames[i];
+	apps[name] = {};
+	apps[name].router = express.Router();
+	apps[name].router.use(express.static(path.join(root, config.apps.path, name , '/web/dist')));
+}
+
 var staticApp = express();
 staticApp.use('*', function (req, res, next) {
 	res.send('kek<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.js"></script>');
 });
 
-//------------------------------vhost server------------------------------//
+// vhost
 
 var forwarder = express();
 	forwarder.all('*', function (req, res) {
@@ -48,8 +60,15 @@ var app = express();
 
 	app.use(vhost('os.' + config.host.name, osApp));
 	app.use(vhost('static.' + config.host.name, staticApp));
-	app.use(vhost('*.' + config.host.name, forwarder));
-	app.use(mainApp);
+
+	// apps
+	for (var i in apps) {
+		app.use(vhost(i + '.' + config.host.name, apps[i].router));
+	}
+
+	// wildcard
+
+	// app.use(vhost('*.' + config.host.name, forwarder));
 
 // http
 httpServer = http.createServer(app).listen(config.http.port, function () {

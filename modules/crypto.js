@@ -17,7 +17,12 @@ function checkPassword (password, hashedPassword, salt) {
 	return crypto.createHash('sha512').update(password + salt + config.crypto.pepper).digest('base64') === hashedPassword;
 }
 
+function createToken () {
+	return crypto.randomBytes(64).toString('hex');
+}
+
 module.exports = {
 	createPassword: createPassword,
-	checkPassword: checkPassword
+	checkPassword: checkPassword,
+	createToken: createToken
 };

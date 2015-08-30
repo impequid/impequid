@@ -81,6 +81,7 @@ $(document).ready(function () {
 	});
 	window.socket.on('disconnect', function () {
 		$('.dimmer').dimmer('show');
+		console.log('disconnected from ' + url);
 		reconnect.attempt();
 	});
 });
@@ -88,7 +89,7 @@ $(document).ready(function () {
 var reconnect = {
 	delay: 1500,
 	attempt: function () {
-		var url = location.protocol + '//' + location.host + location.pathname;
+		var url = location.protocol + '//' + location.host;
 		var request = $.get(url, function (data) {
 			socket.connect();
 			reconnect.delay = 1500;

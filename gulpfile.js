@@ -25,7 +25,9 @@ var path = {
 
 	AUTOBUILD: 'web/src/**/*',
 
-	FONT: 'web/dist/themes/default/assets/fonts/'
+	FONT: 'web/dist/themes/default/assets/fonts/',
+
+	APPS: 'apps'
 };
 
 var url = {
@@ -113,21 +115,25 @@ gulp.task('nodownload', function (callback) {
 	);
 });
 
-gulp.task('autobuild', function (cb) {
+gulp.task('autobuild', function (callback) {
 	watch(path.AUTOBUILD, {ignoreInitial: false}, function() {
     	gulp.start('default');
 	});
 });
 
-gulp.task('autobuildnodownload', function (cb) {
+gulp.task('autobuildnodownload', function (callback) {
 	watch(path.AUTOBUILD, {ignoreInitial: false}, function() {
     	gulp.start('nodownload');
 	});
 });
 
-// gulp.task('autoBuild', function () {
-// 	watch(path.AUTOBUILD);
-// 	// return gulp.src(path.AUTOBUILD)
-// 	// 	.pipe(watch(path.AUTOBUILD, {ignoreInitial: false}, ['default']))
-// 	// 	.pipe(gulp.dest(path.DEST));
-// });
+gulp.task('app', function (callback) {
+	return runSequence(
+		['copyAppHTML']
+	);
+});
+
+gulp.task('copyAppHTML', function (callback) {
+	return gulp.src(path.APPS + '/notes/web/src/index.html')
+		.pipe(gulp.dest(path.APPS + '/notes/web/dist'));
+});
