@@ -1,22 +1,17 @@
 <!doctype html>
 <html>
 <head>
-    <title>notes</title>
+	<title>impequid notes</title>
+    <link rel="shortcut icon" type="image/png" href="//dodekeract.report/png/icon.png" />
+    <link rel="shortcut icon" type="image/svg" href="//dodekeract.report/svg/dodekeract.svg" />
+    <link rel="stylesheet" href="//static.dodekeract.report:8443/semantic.min.css" />
+    <script src="https://static.dodekeract.report:8443/jquery.min.js" charset="utf-8"></script>
+    <script src="https://static.dodekeract.report:8443/semantic.min.js" charset="utf-8"></script>
     <script src="https://static.dodekeract.report:8443/socket.io.min.js" charset="utf-8"></script>
-    <script>
-        var socket = io.connect();
-        socket.on('connect', function () {
-            console.log('connected');
-            socket.emit('token:digest', prompt('Token?'), function (err, data) {
-                console.log('token:digest', err, data);
-                socket.emit('user:get', function (err, data) {
-                    console.log('user:get', err, data);
-                });
-            });
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.js" charset="utf-8"></script>
+    <script src="app.js" charset="utf-8"></script>
 </head>
 <body>
-
+    notes app
 </body>
 </html>

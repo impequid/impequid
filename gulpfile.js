@@ -18,25 +18,27 @@ var path = {
 	DEST: 'web/dist',
 	ENTRY_POINT: 'web/src/components/main.jsx',
 
-	DOWNLOADS: 'web/lib',
-
-	semanticUI: 'web/lib/semantic.min.js',
-	jQuery: 'web/lib/jquery.min.js',
+	semanticUI: 'web/static/semantic.min.js',
+	jQuery: 'web/static/jquery.min.js',
 
 	AUTOBUILD: 'web/src/**/*',
 
-	FONT: 'web/dist/themes/default/assets/fonts/',
+	FONT: 'web/static/themes/default/assets/fonts/',
 
 	APPS: 'apps',
+
+	APP_ENTRY_POINT: 'apps/notes/web/src/components/main.jsx',
+
+	APP_DEST: 'apps/notes/web/dist',
 
 	STATIC: 'web/static'
 };
 
 var url = {
-	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.js',
+	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.js',
 	jQuery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
-	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.css',
-	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/themes/default/assets/fonts/icons.woff2',
+	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.css',
+	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/themes/default/assets/fonts/icons.woff2',
 	socketIOClient: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js'
 };
 
@@ -59,21 +61,21 @@ var browserifyArguments = {
 
 gulp.task('downloadSemantic', function () {
 	return download(url.semanticUI)
-		.pipe(gulp.dest(path.DOWNLOADS));
+		.pipe(gulp.dest(path.STATIC));
 });
 
 gulp.task('downloadJQuery', function () {
 	return download(url.jQuery)
-		.pipe(gulp.dest(path.DOWNLOADS));
+		.pipe(gulp.dest(path.STATIC));
 });
 
 gulp.task('downloadSemanticCSS', function () {
 	return download(url.semanticUICSS)
 		.pipe(rename(function (path) {
-			path.basename = 'semantic';
+			path.basename = 'semantic.min';
 			path.extname = '.css';
 		}))
-		.pipe(gulp.dest(path.DEST));
+		.pipe(gulp.dest(path.STATIC));
 });
 
 gulp.task('downloadSemanticFont', function () {
@@ -132,13 +134,25 @@ gulp.task('autobuildnodownload', function (callback) {
 
 gulp.task('app', function (callback) {
 	return runSequence(
-		['copyAppHTML']
+		['copyAppHTML', 'buildApp']
 	);
 });
 
 gulp.task('copyAppHTML', function (callback) {
 	return gulp.src(path.APPS + '/notes/web/src/index.html')
 		.pipe(gulp.dest(path.APPS + '/notes/web/dist'));
+});
+
+gulp.task('buildApp', function (callback) {
+	return gulp.src(path.APP_ENTRY_POINT)
+		.pipe(browserify({
+			transform: [reactify]
+		}))
+		.pipe(rename(function (path) {
+			path.basename = 'app';
+			path.extname = '.js';
+		}))
+		.pipe(gulp.dest(path.APP_DEST));
 });
 
 gulp.task('download', function (callback) {

@@ -38,7 +38,14 @@ for (var i = 0; i < appNames.length; i++) {
 	apps[name].router.use(express.static(path.join(root, config.apps.path, name , '/web/dist')));
 }
 
+// static files
+
 var staticApp = express();
+staticApp.use(function(req, res, next) { // allow access from all origins
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 staticApp.use(express.static(path.join(root, '/web/static')));
 
 // vhost
@@ -69,12 +76,12 @@ var app = express();
 	// app.use(vhost('*.' + config.host.name, forwarder));
 
 // http
-httpServer = http.createServer(app).listen(config.http.port, function () {
+var httpServer = http.createServer(app).listen(config.http.port, function () {
 	log.info('HTTP is running on port ' + config.http.port);
 });
 
 // redirect https to http
-httpsServer = https.createServer({
+var httpsServer = https.createServer({
 	key: fs.readFileSync(root + '/ssl/private.key', 'utf8'),
 	cert: fs.readFileSync(root + '/ssl/certificate.crt', 'utf8')
 }, app).listen(config.https.port, function () {

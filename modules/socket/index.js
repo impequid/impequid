@@ -47,13 +47,17 @@ function init (servers) {
 			});
 		} else { // public api
 			// token
-			socket.on('token:digest', function (app, callback) {
-				token.digest(socket, app, callback);
+			socket.on('token:digest', function (possibleToken, callback) {
+				token.digest(socket, possibleToken, callback);
 				console.log('digest', socket.handshake.session);
 			});
 			// application
 			socket.on('user:get', function (callback) {
-				callback(socket.handshake.session.user.username);
+				if(socket.handshake.session.user) {
+					callback(null, socket.handshake.session.user.username);
+				} else {
+					callback('not authenticated');
+				}
 			});
 		}
 		socket.on('error', function (err) {

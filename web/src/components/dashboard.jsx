@@ -8,8 +8,7 @@ var Dashboard = React.createClass({
 	},
 	getToken: function () {
 		var that = this;
-		var appName = prompt('App name?', 'notes');
-		window.socket.emit('token:create', appName, function (err, token) {
+		window.socket.emit('token:create', 'notes', function (err, token) {
 			if (!err) that.setState({
 				token: token
 			});
@@ -18,7 +17,10 @@ var Dashboard = React.createClass({
 	render: function render () {
 		return (
 			<main className="column">
-				<button className="ui button" onClick={this.getToken}>get token</button>{this.state.token}
+				<div className="ui action input">
+					<input type="text" value={this.state.token} readOnly={true} />
+					<button className="ui button" onClick={this.getToken}>Get Notes Token</button>
+				</div>
 			</main>
 		);
 	}

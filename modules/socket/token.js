@@ -1,37 +1,11 @@
+var ShortTermMemory = require('short-term-memory');
 var crypto = require('../crypto');
 var config = require('../config');
 var log = require('../log').createNamespace({
     name: 'socket-token'
 });
 
-// short-time in-memory single-get storage
-function Storage (time) {
-    this.data = [];
-    this.time = time;
-}
-Storage.prototype.add = function (key, value) {
-    var that = this;
-    this.data[key] = {
-        value: value,
-        timeout: setTimeout(function () {
-            delete that.data[key];
-        }, this.time)
-    };
-}
-
-Storage.prototype.get = function (key) {
-    if (this.data[key]) {
-        var value = this.data[key].value;
-        if (value) {
-            delete this.data[key];
-            return value;
-        }
-    } else {
-        return false;
-    }
-}
-
-var tokenStore = new Storage(config.tokens.time);
+var tokenStore = new ShortTermMemory(config.tokens.time);
 
 function create (socket, app, callback) {
     var token = crypto.createToken();

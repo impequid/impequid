@@ -63,6 +63,7 @@
     "require-dot-file": "^0.4.0",
     "require-one": "^1.0.0",
     "sessionstore": "^1.2.3",
+    "short-term-memory": "0.0.1",
     "socket.io": "^1.3.5",
     "socket.io-client": "^1.3.6",
     "socket.io-events": "^0.4.6",
