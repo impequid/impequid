@@ -6,7 +6,7 @@ var RouteHandler = Router.RouteHandler;
 var Login = React.createClass({
 	render: function render () {
 		return (
-			<main className="v-container">
+			<main className="v-container background-image">
 				<div className="v-center-area">
 					<div className="v-centered">
 						<RouteHandler/>

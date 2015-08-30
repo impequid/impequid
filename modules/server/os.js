@@ -2,8 +2,10 @@ var express = require('express');
 var cors = require('cors');
 var session = require('../sessions').session;
 
+var root = process.mainModule.exports.root;
+
 var whitelist = [
-	'https://os.dode.keract'
+	'https://os.dodekeract.report'
 ];
 var corsOptions = {
 	origin: function (origin, callback) {

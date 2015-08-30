@@ -21,20 +21,21 @@ var log = require('../log').createNamespace({
 // import from main module
 var root = process.mainModule.exports.root;
 
-// os
-var osApp = require('./os.js');
-
 //------------------------------apps------------------------------//
 
+var osApp = require('./os.js');
 var mainApp = express();
 var homeApp = express();
 var staticApp = express();
+staticApp.use('*', function (req, res, next) {
+	res.send('kek<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.js"></script>');
+});
 
 //------------------------------vhost server------------------------------//
 
 var forwarder = express();
 	forwarder.all('*', function (req, res) {
-		res.redirect('https://dodekeract.report' + req.url);
+		res.redirect('https://' + config.host.name + req.url);
 	});
 
 var app = express();
@@ -45,9 +46,9 @@ var app = express();
 
 	// main
 
-	app.use(vhost('os.dode.keract', osApp));
-	app.use(vhost('static.dode.keract', staticApp));
-	app.use(vhost('*.dode.keract', forwarder));
+	app.use(vhost('os.' + config.host.name, osApp));
+	app.use(vhost('static.' + config.host.name, staticApp));
+	app.use(vhost('*.' + config.host.name, forwarder));
 	app.use(mainApp);
 
 // http

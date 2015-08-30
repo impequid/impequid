@@ -54,7 +54,6 @@ $(document).ready(function () {
 		reconnection: false
 	});
 	window.socket.on('connect', function () {
-		Header.setSocket(socket);
 		$('.dimmer').dimmer('hide');
 		console.info('socket connected');
 		// verify login

@@ -1,12 +1,12 @@
 module.exports = {
 	https: {
-		port: 443
+		port: 8443
 	},
 	http: {
-		port: 80
+		port: 8080
 	},
 	db: {
-		main: 'mongodb://localhost'
+		main: 'mongodb://server/impequid'
 	},
 	sessions: {
 		"secret": "cykablyatidinahui",
@@ -15,5 +15,8 @@ module.exports = {
 	},
 	crypto: {
 		pepper: 'cykablyatidinahui'
+	},
+	host: {
+		name: 'dodekeract.report'
 	}
 }

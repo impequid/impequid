@@ -14,7 +14,7 @@ var LoginMain = React.createClass({
 		this.setState({
 			loginButtonClasses: 'ui loading segment'
 		});
-		window.socket.emit('login', {
+		window.socket.emit('session:login', {
 			email: that.state.email,
 			password: that.state.password
 		}, function (err, data) {

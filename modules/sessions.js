@@ -19,29 +19,7 @@ config.sessions.store = new MongoStore({
 var session = expressSession(config.sessions);
 var sharedSession = require('express-socket.io-session')(session);
 
-function verify (socket, callback) {
-	log.debug(socket.handshake.session, socket.handshake.session.id);
-	if(socket.handshake.session.loggedIn) {
-		callback(null, socket.handshake.session.userdata);
-	} else {
-		callback(true, null);
-	}
-}
-
-function auth(socket, target, callback, data) {
-	if (socket.handshake.session.loggedIn) {
-		if (data) {
-			target(data, socket, callback);
-		} else {
-			target(socket, callback);
-		}
-	} else {
-		callback(true);
-	}
-}
-
 module.exports = {
 	session: session,
-	shared: sharedSession,
-	verify: verify
+	shared: sharedSession
 };

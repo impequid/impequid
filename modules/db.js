@@ -9,10 +9,10 @@ mongoose.connect(config.db.main);
 
 function init () {
 	model.User = mongoose.model('User', {
-		username: String,
-		password: String,
-		email: String,
-		salt: String
+		username: {type: String, unique: true, required: true, dropDubs: true, index: true},
+		password: {type: String, required: true},
+		email: {type: String, unique: true, required: true, dropDubs: true, index: true},
+		salt: {type: String, required: true}
 	});
 }
 

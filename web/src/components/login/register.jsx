@@ -65,7 +65,7 @@ var Register = React.createClass({
 	register: function register (e) {
 		var that = this;
 		e.preventDefault();
-		window.socket.emit('register', {
+		window.socket.emit('session:register', {
 			email: that.state.email,
 			password: that.state.password,
 			username: that.state.username,

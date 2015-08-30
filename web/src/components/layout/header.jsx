@@ -2,14 +2,11 @@ var React = require('react');
 
 var Link = require('react-router').Link;
 
-var socket;
-
 var Header = React.createClass({
 	logout: function logout () {
-		console.log(socket);
-		socket.emit('logout', function (err, data) {
+		window.socket.emit('session:logout', function (err, data) {
 			if (!err) {
-				delete localStorage.hasSession;
+				delete localStorage.impequidHasSession;
 				location.href = '#/login';
 			}
 		});
@@ -37,8 +34,5 @@ var Header = React.createClass({
 });
 
 module.exports = {
-	Header: Header,
-	setSocket: function setSocket (s) {
-		socket = s;
-	}
+	Header: Header
 }
