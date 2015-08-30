@@ -39,9 +39,7 @@ for (var i = 0; i < appNames.length; i++) {
 }
 
 var staticApp = express();
-staticApp.use('*', function (req, res, next) {
-	res.send('kek<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.js"></script>');
-});
+staticApp.use(express.static(path.join(root, '/web/static')));
 
 // vhost
 

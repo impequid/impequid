@@ -27,14 +27,17 @@ var path = {
 
 	FONT: 'web/dist/themes/default/assets/fonts/',
 
-	APPS: 'apps'
+	APPS: 'apps',
+
+	STATIC: 'web/static'
 };
 
 var url = {
 	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.js',
 	jQuery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
 	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/semantic.min.css',
-	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/themes/default/assets/fonts/icons.woff2'
+	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.12.3/themes/default/assets/fonts/icons.woff2',
+	socketIOClient: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js'
 };
 
 var browserifyArguments = {
@@ -136,4 +139,9 @@ gulp.task('app', function (callback) {
 gulp.task('copyAppHTML', function (callback) {
 	return gulp.src(path.APPS + '/notes/web/src/index.html')
 		.pipe(gulp.dest(path.APPS + '/notes/web/dist'));
+});
+
+gulp.task('download', function (callback) {
+	return download(url.socketIOClient)
+		.pipe(gulp.dest(path.STATIC));
 });

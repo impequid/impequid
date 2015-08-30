@@ -1,6 +1,7 @@
 node_modules/
 web/dist/
 web/lib/
+web/static/
 log/
 Thumbs.db
 apps/*/web/dist

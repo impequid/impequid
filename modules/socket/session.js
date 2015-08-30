@@ -32,9 +32,9 @@ function login (socket, data, callback) {
 			} else {
 				if (crypt.checkPassword(data.password, user.password, user.salt)) {
                     socket.handshake.session.loggedIn = true;
-                    socket.handshake.session.userdata = {
+                    socket.handshake.session.user = {
                         username: user.username,
-                        email: user.email
+                        email: data.email
                     };
                     socket.handshake.session.save();
                     callback(null, true);
@@ -49,15 +49,15 @@ function login (socket, data, callback) {
 }
 
 function logout (socket, callback) {
-    socket.handshake.session.loggedIn = false;
-	socket.handshake.session.userdata = {};
+    delete socket.handshake.session.loggedIn;
+	delete socket.handshake.session.user;
 	socket.handshake.session.save();
 	callback(null, true);
 }
 
 function verify (socket, callback) {
 	if (socket.handshake.session.loggedIn) {
-		callback(null, socket.handshake.session.userdata);
+		callback(null, socket.handshake.session.user);
 	} else {
 		callback(true, null);
 	}

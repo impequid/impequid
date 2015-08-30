@@ -29,8 +29,7 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
-		console.log(subdomain, socket.handshake.session);
-		if (subdomain === 'os') {
+		if (subdomain === 'os') { // private api
 			socket.on('session:login', function (data, callback) {
 				session.login(socket, data, callback);
 			});
@@ -46,10 +45,15 @@ function init (servers) {
 			socket.on('token:create', function (app, callback) {
 				token.create(socket, app, callback);
 			});
-		} else {
+		} else { // public api
+			// token
 			socket.on('token:digest', function (app, callback) {
-				console.log('digest', socket.handshake.session);
 				token.digest(socket, app, callback);
+				console.log('digest', socket.handshake.session);
+			});
+			// application
+			socket.on('user:get', function (callback) {
+				callback(socket.handshake.session.user.username);
 			});
 		}
 		socket.on('error', function (err) {
