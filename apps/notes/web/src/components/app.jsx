@@ -6,10 +6,12 @@ var Menu = require('./menu.jsx');
 var App = React.createClass({
 	render: function render () {
 		return (
-			<div id="fuck-react">
+			<div id="fuck-react" className="ui bottom attached segment pushable">
 				<Menu/>
-				<div style={{marginTop: 60 + 'px'}}>
-					<RouteHandler/>
+				<div className="pusher">
+					<div className="ui basic segment">
+						<RouteHandler/>
+					</div>
 				</div>
 			</div>
 		);

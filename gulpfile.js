@@ -27,9 +27,9 @@ var path = {
 
 	APPS: 'apps',
 
-	APP_ENTRY_POINT: 'apps/notes/web/src/components/main.jsx',
+	APP_ENTRY_POINT: 'apps/files/web/src/components/main.jsx',
 
-	APP_DEST: 'apps/notes/web/dist',
+	APP_DEST: 'apps/files/web/dist',
 
 	STATIC: 'web/static'
 };
@@ -139,8 +139,8 @@ gulp.task('app', function (callback) {
 });
 
 gulp.task('copyAppHTML', function (callback) {
-	return gulp.src(path.APPS + '/notes/web/src/index.html')
-		.pipe(gulp.dest(path.APPS + '/notes/web/dist'));
+	return gulp.src(path.APPS + '/files/web/src/index.html')
+		.pipe(gulp.dest(path.APPS + '/files/web/dist'));
 });
 
 gulp.task('buildApp', function (callback) {

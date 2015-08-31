@@ -20,6 +20,12 @@ var Header = React.createClass({
 				<Link to="dashboard" className="item">
 					<i className="dashboard icon"></i> dashboard
 				</Link>
+				<Link to="app" params={{name: 'notes'}} className="item">
+					<i className="edit icon"></i> notes
+				</Link>
+				<Link to="app" params={{name: 'files'}} className="item">
+					<i className="folder icon"></i> files
+				</Link>
 				<nav className="right menu">
 					<a onClick={this.logout} className="item">
 						<i className="sign out icon"></i> logout

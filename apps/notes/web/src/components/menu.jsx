@@ -5,10 +5,23 @@ var Link = require('react-router').Link;
 var Menu = React.createClass({
 	render: function render () {
 		return (
-			<nav className="ui inverted fixed menu">
-				<Link to="dashboard" className="item">
-					<i className="dashboard icon"></i> all notes
-				</Link>
+			<nav className="ui visible inverted left vertical sidebar menu">
+				<a className="item">
+					<i className="home icon"></i>
+					Home
+				</a>
+				<a className="item">
+					<i className="block layout icon"></i>
+					Topics
+				</a>
+				<a className="item">
+					<i className="smile icon"></i>
+					Friends
+				</a>
+				<a className="item">
+					<i className="calendar icon"></i>
+					History
+				</a>
 			</nav>
 		);
 	}

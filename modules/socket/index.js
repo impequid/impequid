@@ -7,6 +7,7 @@ var sharedSession = require('../sessions').shared;
 // require socket routes
 var session = require('./session');
 var token = require('./token');
+var filesystem = require('./filesystem');
 
 // set up log
 var log = require('../log').createNamespace({
@@ -29,7 +30,7 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
-		if (subdomain === 'os') { // private api
+		if (subdomain === 'os') { // user api
 			socket.on('session:login', function (data, callback) {
 				session.login(socket, data, callback);
 			});
@@ -45,21 +46,29 @@ function init (servers) {
 			socket.on('token:create', function (app, callback) {
 				token.create(socket, app, callback);
 			});
-		} else { // public api
+		} else { // application api
 			// token
 			socket.on('token:digest', function (possibleToken, callback) {
 				token.digest(socket, possibleToken, callback);
 				console.log('digest', socket.handshake.session);
 			});
-			// application
-			socket.on('user:get', function (callback) {
-				if(socket.handshake.session.user) {
-					callback(null, socket.handshake.session.user.username);
-				} else {
-					callback('not authenticated');
-				}
-			});
 		}
+		// public api
+		socket.on('user:get', function (callback) {
+			if(socket.handshake.session.user) {
+				callback(null, socket.handshake.session.user.username);
+			} else {
+				callback('not authenticated');
+			}
+		});
+		// fs
+		socket.on('filesystem:folder:get', function (path, callback) {
+			filesystem.getFolder(socket, path, callback);
+		});
+		socket.on('filesystem:folder:create', function (path, callback) {
+			filesystem.createFolder(socket, path, callback);
+		});
+		// other
 		socket.on('error', function (err) {
 			log.error(err);
 		});

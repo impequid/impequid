@@ -2,8 +2,6 @@ var React = require('react');
 
 var Header = require('./layout/header.jsx').Header;
 
-var Footer = require('./layout/footer.jsx');
-
 var RouteHandler = require('react-router').RouteHandler;
 
 var App = React.createClass({
@@ -11,10 +9,9 @@ var App = React.createClass({
 		return (
 			<div id="fuck-react">
 				<Header/>
-				<div style={{marginTop: 60 + 'px', marginBottom: 60 + 'px'}}>
+				<div className="application">
 					<RouteHandler/>
 				</div>
-				<Footer/>
 			</div>
 		);
 	},

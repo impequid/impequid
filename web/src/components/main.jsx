@@ -9,6 +9,7 @@ var api = require('./api/');
 
 // routes
 var App = require('./app.jsx');
+var AppLoader = require('./app-loader.jsx');
 
 var Dashboard = require('./dashboard.jsx');
 var Login = require('./login/login.jsx');
@@ -28,8 +29,9 @@ var routes = (
 	<Route>
 		<Route name="main" path="/" handler={App}>
 			<DefaultRoute name="dashboard" handler={Dashboard}/>
+			<Route name="app" path="app/:name" handler={AppLoader}/>
 		</Route>
-		<Route name="login" path="/login" handler={Login}>
+		<Route name="login" path="login" handler={Login}>
 			<Route name="register" handler={Register}/>
 			<DefaultRoute handler={LoginMain}/>
 		</Route>
@@ -38,12 +40,11 @@ var routes = (
 
 function renderRoute () {
 	Router.run(routes, function (Handler) {
-		React.render(<Handler/>, $('.pusher')[0]);
+		React.render(<Handler/>, $('.full')[0]);
 	});
 }
 
 $(document).ready(function () {
-	renderRoute();
 	var routeRendered;
 	$('.dimmer').dimmer({
 		closable: false
@@ -54,6 +55,7 @@ $(document).ready(function () {
 		reconnection: false
 	});
 	window.socket.on('connect', function () {
+		renderRoute();
 		$('.dimmer').dimmer('hide');
 		console.info('socket connected');
 		// verify login

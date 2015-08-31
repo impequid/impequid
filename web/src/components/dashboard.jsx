@@ -8,7 +8,7 @@ var Dashboard = React.createClass({
 	},
 	getToken: function () {
 		var that = this;
-		window.socket.emit('token:create', 'notes', function (err, token) {
+		window.socket.emit('token:create', 'files', function (err, token) {
 			if (!err) that.setState({
 				token: token
 			});
@@ -19,7 +19,7 @@ var Dashboard = React.createClass({
 			<main className="column">
 				<div className="ui action input">
 					<input type="text" value={this.state.token} readOnly={true} />
-					<button className="ui button" onClick={this.getToken}>Get Notes Token</button>
+					<button className="ui button" onClick={this.getToken}>Get Files Token</button>
 				</div>
 			</main>
 		);
