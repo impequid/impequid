@@ -1,8 +1,7 @@
 var express = require('express');
 var cors = require('cors');
 var session = require('../sessions').session;
-
-var root = process.mainModule.exports.root;
+var config = require('../config');
 
 var whitelist = [
 	'https://os.dodekeract.report'
@@ -20,6 +19,6 @@ app.use(cors(corsOptions));
 app.use(session);
 
 // static files
-app.use(express.static(root + '/web/dist'));
+app.use(express.static(config.root + '/web/dist'));
 
 module.exports = app;

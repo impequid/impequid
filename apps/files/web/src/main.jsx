@@ -3,8 +3,8 @@ var React = require('react');
 var Router = require('react-router');
 
 // require internal
-var SpookySkelton = require('./layout.jsx');
-var Content = require('./content.jsx');
+var SpookySkelton = require('./ui/layout.jsx');
+var Content = require('./ui/content.jsx');
 
 // alias
 var DefaultRoute = Router.DefaultRoute;

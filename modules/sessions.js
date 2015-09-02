@@ -13,7 +13,7 @@ var MongoStore = require('connect-mongo')(expressSession);
 
 // update config.sessions
 config.sessions.store = new MongoStore({
-	mongooseConnection: db.mongoose.connection
+	mongooseConnection: db.connection
 });
 
 var session = expressSession(config.sessions);

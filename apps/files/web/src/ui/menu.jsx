@@ -30,16 +30,6 @@ var Menu = React.createClass({
 				</nav>
 			</nav>
 		);
-	},
-	componentDidMount: function componentDidMount () {
-		var that = this;
-		window.socket.emit('filesystem:folder:get', '/', function (err, data) {
-			console.log('filesystem:folder:get', err, data);
-			that.setState({
-				folder: data.folders,
-				files: data.files
-			});
-		});
 	}
 });
 

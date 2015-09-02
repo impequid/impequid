@@ -1,4 +1,7 @@
+var path = require('path');
+
 module.exports = {
+	root: path.resolve(__dirname + '../..'),
 	https: {
 		port: 8443
 	},
@@ -24,5 +27,9 @@ module.exports = {
 	},
 	apps: {
 		path: 'apps'
+	},
+	tests: {
+		domain: 'localhost:8080',
+		port: 8080
 	}
 }

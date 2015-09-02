@@ -27,7 +27,7 @@ var path = {
 
 	APPS: 'apps',
 
-	APP_ENTRY_POINT: 'apps/files/web/src/components/main.jsx',
+	APP_ENTRY_POINT: 'apps/files/web/src/main.jsx',
 
 	APP_DEST: 'apps/files/web/dist',
 

@@ -1,16 +1,6 @@
 // require external
 var express = require('express');
-var db = require('./modules/db')
-
-// export
-module.exports = {
-	root: __dirname
-};
-
-// database
-db.init();
-
-// http(s) server
+var db = require('./modules/db');
 var server = require('./modules/server');
 
 // initialize socket.io

@@ -3,6 +3,7 @@ var sio = require('socket.io');
 
 // require internal
 var sharedSession = require('../sessions').shared;
+var config = require('../config');
 
 // require socket routes
 var session = require('./session');
@@ -30,7 +31,7 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
-		if (subdomain === 'os') { // user api
+		if (subdomain === 'os' || config.tests.domain) { // user api
 			socket.on('session:login', function (data, callback) {
 				session.login(socket, data, callback);
 			});
@@ -46,11 +47,12 @@ function init (servers) {
 			socket.on('token:create', function (app, callback) {
 				token.create(socket, app, callback);
 			});
-		} else { // application api
+		}
+		// fixes localhost:8080 not gaining access
+		if (subdomain !== 'os'){ // application api
 			// token
 			socket.on('token:digest', function (possibleToken, callback) {
 				token.digest(socket, possibleToken, callback);
-				console.log('digest', socket.handshake.session);
 			});
 		}
 		// public api
@@ -67,6 +69,9 @@ function init (servers) {
 		});
 		socket.on('filesystem:folder:create', function (path, callback) {
 			filesystem.createFolder(socket, path, callback);
+		});
+		socket.on('filesystem:folder:rename', function (path, newName, callback) {
+			filesystem.renameFolder(socket, path, newName, callback);
 		});
 		// other
 		socket.on('error', function (err) {

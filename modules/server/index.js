@@ -18,9 +18,6 @@ var log = require('../log').createNamespace({
 	colors: ['bgYellowBright', 'black']
 });
 
-// import from main module
-var root = process.mainModule.exports.root;
-
 // core
 var osApp = require('./os.js');
 
@@ -35,7 +32,7 @@ for (var i = 0; i < appNames.length; i++) {
 	var name = appNames[i];
 	apps[name] = {};
 	apps[name].router = express.Router();
-	apps[name].router.use(express.static(path.join(root, config.apps.path, name , '/web/dist')));
+	apps[name].router.use(express.static(path.join(config.root, config.apps.path, name , '/web/dist')));
 }
 
 // static files
@@ -46,7 +43,7 @@ staticApp.use(function(req, res, next) { // allow access from all origins
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
-staticApp.use(express.static(path.join(root, '/web/static')));
+staticApp.use(express.static(path.join(config.root, '/web/static')));
 
 // vhost
 
@@ -64,6 +61,7 @@ var app = express();
 	// main
 
 	app.use(vhost('os.' + config.host.name, osApp));
+	app.use(vhost('localhost', osApp));
 	app.use(vhost('static.' + config.host.name, staticApp));
 
 	// apps
@@ -82,8 +80,8 @@ var httpServer = http.createServer(app).listen(config.http.port, function () {
 
 // redirect https to http
 var httpsServer = https.createServer({
-	key: fs.readFileSync(root + '/ssl/private.key', 'utf8'),
-	cert: fs.readFileSync(root + '/ssl/certificate.crt', 'utf8')
+	key: fs.readFileSync(config.root + '/ssl/private.key', 'utf8'),
+	cert: fs.readFileSync(config.root + '/ssl/certificate.crt', 'utf8')
 }, app).listen(config.https.port, function () {
 	log.info('HTTPS is running on port ' + config.https.port);
 });
