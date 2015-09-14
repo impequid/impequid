@@ -1,9 +1,12 @@
 // require external
 var sio = require('socket.io');
+var sios = require('socket.io-stream');
+var path = require('path');
 
 // require internal
 var sharedSession = require('../sessions').shared;
 var config = require('../config');
+var gridFS = require('../grid-fs.js');
 
 // require socket routes
 var session = require('./session');
@@ -31,7 +34,8 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
-		if (subdomain === 'os' || config.tests.domain) { // user api
+		log.debug(subdomain);
+		if (subdomain === 'os' || config.whitelist && config.whitelist.indexOf(subdomain) !== -1) { // user api
 			socket.on('session:login', function (data, callback) {
 				session.login(socket, data, callback);
 			});
@@ -48,13 +52,23 @@ function init (servers) {
 				token.create(socket, app, callback);
 			});
 		}
-		// fixes localhost:8080 not gaining access
-		if (subdomain !== 'os'){ // application api
+		if (subdomain !== 'os' || config.whitelist && config.whitelist.indexOf(subdomain) !== -1) { // application api
 			// token
 			socket.on('token:digest', function (possibleToken, callback) {
 				token.digest(socket, possibleToken, callback);
 			});
+			// fs
+			socket.on('filesystem:folder:get', function (path, callback) {
+				filesystem.getFolder(socket, path, callback);
+			});
+			socket.on('filesystem:folder:create', function (path, callback) {
+				filesystem.createFolder(socket, path, callback);
+			});
+			socket.on('filesystem:folder:rename', function (path, newName, callback) {
+				filesystem.renameFolder(socket, path, newName, callback);
+			});
 		}
+
 		// public api
 		socket.on('user:get', function (callback) {
 			if(socket.handshake.session.user) {
@@ -63,19 +77,24 @@ function init (servers) {
 				callback('not authenticated');
 			}
 		});
-		// fs
-		socket.on('filesystem:folder:get', function (path, callback) {
-			filesystem.getFolder(socket, path, callback);
-		});
-		socket.on('filesystem:folder:create', function (path, callback) {
-			filesystem.createFolder(socket, path, callback);
-		});
-		socket.on('filesystem:folder:rename', function (path, newName, callback) {
-			filesystem.renameFolder(socket, path, newName, callback);
-		});
+
 		// other
 		socket.on('error', function (err) {
 			log.error(err);
+		});
+
+		// socket.io-stream
+		sios(socket).on('file', function (readStream, data) {
+			var filename = path.basename(data.name);
+			log.debug(filename);
+			// JUST DO IT
+			var writeStream = gridFS.gridFS.createWriteStream({
+			    filename: filename
+			});
+			readStream.pipe(writeStream);
+			writeStream.on('close', function (file) {
+			    log.info(file.filename + 'Written To DB');
+			});
 		});
 	});
 }

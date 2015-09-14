@@ -1,6 +1,6 @@
 // require internal
 var config = require('./config');
-var db = require('./db');
+var db = require('./database');
 
 // set up log
 var log = require('./log').createNamespace({

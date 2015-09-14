@@ -2,14 +2,104 @@
 <html>
 <head>
 	<title>impequid files</title>
-    <link rel="shortcut icon" type="image/png" href="//dodekeract.report/png/icon.png" />
-    <link rel="shortcut icon" type="image/svg" href="//dodekeract.report/svg/dodekeract.svg" />
-    <link rel="stylesheet" href="//static.dodekeract.report:8443/semantic.min.css" />
-    <script src="https://static.dodekeract.report:8443/jquery.min.js" charset="utf-8"></script>
-    <script src="https://static.dodekeract.report:8443/semantic.min.js" charset="utf-8"></script>
-    <script src="https://static.dodekeract.report:8443/socket.io.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.js" charset="utf-8"></script>
+    <link rel="shortcut icon" type="image/png" href="//dodekeract.report/png/icon.png"/>
+    <link rel="shortcut icon" type="image/svg" href="//dodekeract.report/svg/dodekeract.svg"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.2/semantic.min.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js" charset="utf-8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.2/semantic.min.js" charset="utf-8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js" charset="utf-8"></script>
     <script src="app.js" charset="utf-8"></script>
+	<style>
+		.invisible {
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 0;
+			width: 0;
+			visibility: hidden;
+	 	}
+		/*  SECTIONS  */
+		.section {
+			clear: both;
+			padding: 0px;
+			margin: 0px;
+		}
+
+		/*  COLUMN SETUP  */
+		.col {
+			display: block;
+			float:left;
+			margin: 0% 0 0% 0%;
+		}
+		.col:first-child { margin-left: 0; }
+
+		/*  GROUPING  */
+		.group:before, .group:after {
+			content:"";
+			display:table;
+		}
+		.group:after {
+			clear:both;
+		}
+
+		/*  GRID OF TWELVE  */
+		.span-12-of-12 {
+			width: 100%;
+		}
+
+		.span-11-of-12 {
+		  	width: 91.666666%;
+		}
+		.span-10-of-12 {
+		  	width: 83.333333%;
+		}
+
+		.span-9-of-12 {
+		  	width: 75%;
+		}
+
+		.span-8-of-12 {
+		  	width: 66.666666%;
+		}
+
+		.span-7-of-12 {
+		  	width: 58.333333%;
+		}
+
+		.span-6-of-12 {
+		  	width: 50%;
+		}
+
+		.span-5-of-12 {
+		  	width: 41.666666%;
+		}
+
+		.span-4-of-12 {
+		  	width: 33.333333%;
+		}
+
+		.span-3-of-12 {
+		  	width: 25%;
+		}
+
+		.span-2-of-12 {
+		  	width: 16.666666%;
+		}
+
+		.span-1-of-12 {
+		  	width: 8.333333%;
+		}
+
+		/*  GO FULL WIDTH BELOW 480 PIXELS */
+		@media only screen and (max-width: 480px) {
+			.col {
+				margin: 1% 0 1% 0%;
+			}
+		    .span-1-of-12, .span-2-of-12, .span-3-of-12, .span-4-of-12, .span-5-of-12, .span-6-of-12, .span-7-of-12, .span-8-of-12, .span-9-of-12, .span-10-of-12, .span-11-of-12, .span-12-of-12 {
+				width: 100%;
+			}
+		}
+	</style>
 </head>
 <body>
 	<div class="ui active inverted dimmer">

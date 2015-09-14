@@ -23,8 +23,8 @@ var osApp = require('./os.js');
 
 // apps
 
-var appNames = fs.readdirSync(config.apps.path).filter(function(file) {
-	return fs.statSync(path.join(config.apps.path, file)).isDirectory();
+var appNames = fs.readdirSync(config.applications.path).filter(function(file) {
+	return fs.statSync(path.join(config.applications.path, file)).isDirectory();
 });
 var apps = {};
 
@@ -32,7 +32,7 @@ for (var i = 0; i < appNames.length; i++) {
 	var name = appNames[i];
 	apps[name] = {};
 	apps[name].router = express.Router();
-	apps[name].router.use(express.static(path.join(config.root, config.apps.path, name , '/web/dist')));
+	apps[name].router.use(express.static(path.join(config.root, config.applications.path, name , '/web/dist')));
 }
 
 // static files
@@ -61,7 +61,7 @@ var app = express();
 	// main
 
 	app.use(vhost('os.' + config.host.name, osApp));
-	app.use(vhost('localhost', osApp));
+
 	app.use(vhost('static.' + config.host.name, staticApp));
 
 	// apps
@@ -71,7 +71,7 @@ var app = express();
 
 	// wildcard
 
-	// app.use(vhost('*.' + config.host.name, forwarder));
+	app.use(vhost('*', forwarder));
 
 // http
 var httpServer = http.createServer(app).listen(config.http.port, function () {

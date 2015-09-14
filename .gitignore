@@ -5,3 +5,9 @@ web/static/
 log/
 Thumbs.db
 apps/*/web/dist
+
+# config-files
+config/*/
+!config/
+!config/default/
+!config/travis/

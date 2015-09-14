@@ -12,5 +12,7 @@ var log = new Log({
 	levelmode: 'debug'
 });
 
+log.debug(config);
+
 // export log
 module.exports = log;

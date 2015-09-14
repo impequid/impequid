@@ -35,10 +35,10 @@ var path = {
 };
 
 var url = {
-	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.js',
+	semanticUI: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.2/semantic.min.js',
 	jQuery: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js',
-	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/semantic.min.css',
-	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.0.8/themes/default/assets/fonts/icons.woff2',
+	semanticUICSS: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.2/semantic.min.css',
+	semanticUIFont: 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.2/themes/default/assets/fonts/icons.woff2',
 	socketIOClient: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js'
 };
 
@@ -66,6 +66,11 @@ gulp.task('downloadSemantic', function () {
 
 gulp.task('downloadJQuery', function () {
 	return download(url.jQuery)
+		.pipe(gulp.dest(path.STATIC));
+});
+
+gulp.task('downloadSIO', function () {
+	return download(url.socketIOClient)
 		.pipe(gulp.dest(path.STATIC));
 });
 
@@ -106,7 +111,7 @@ gulp.task('copyImages', function (callback) {
 gulp.task('default', function (callback) {
 	return runSequence(
 		['copyHTML', 'copyImages'],
-		['downloadSemantic', 'downloadJQuery', 'downloadSemanticCSS', 'downloadSemanticFont'],
+		['downloadSemantic', 'downloadSIO', 'downloadJQuery', 'downloadSemanticCSS', 'downloadSemanticFont'],
 		'build',
 		callback
 	);

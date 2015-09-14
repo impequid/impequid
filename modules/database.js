@@ -14,7 +14,7 @@ var models = {};
 var ObjectId = mongoose.Schema.ObjectId;
 
 // set up mongoose
-var connection = mongoose.createConnection(config.db.main);
+var connection = mongoose.createConnection(config.database.main);
 
 // set up gridfs-stream
 connection.once('open', function () {

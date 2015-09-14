@@ -1,11 +1,12 @@
 // require internal
-var db = require('../db');
+var db = require('../database');
 var crypt = require('../crypto');
+var config = require('../config');
 
 function register (socket, data, callback) {
 	if (!data || !(data.secret && data.password && data.username && data.email)) {
 		callback(true);
-	} else if ((data.secret === 'cyka' && data.password.length >= 8)) {
+	} else if ((data.secret === config.sessions.password && data.password.length >= 8)) {
 		var hashed = crypt.createPassword(data.password);
 		db.models.User.create({
 			username: data.username,

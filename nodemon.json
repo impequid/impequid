@@ -1,3 +1,6 @@
 {
-    "ignore": ["web/*", "node_modules/*", ".git/*", "apps/*", "gulpfile.js"]
+    "ignore": ["web/*", "node_modules/*", ".git/*", "apps/*", "gulpfile.js"],
+    "env": {
+        "NODE_ENV": "development"
+    }
 }

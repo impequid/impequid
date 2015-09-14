@@ -12,8 +12,11 @@ var Dashboard = React.createClass({
 		window.socket.emit('token:create', name, function (err, token) {
 			console.log(err, token);
 			if (!err) {
+				var hostname = location.hostname.substring(3);
+				var port = location.port || 443;
+				console.log(hostname);
 				that.setState({
-					content: (<iframe className="application" src={'https://' + name + '.dodekeract.report:8443?token=' + token}></iframe>)
+					content: (<iframe className="application" src={'https://' + name + '.' + hostname + ':' + port + '?token=' + token}></iframe>)
 				});
 			} else {
 				that.setState({

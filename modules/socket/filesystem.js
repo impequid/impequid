@@ -1,4 +1,4 @@
-var db = require('../db');
+var db = require('../database');
 var log = require('../log').createNamespace({
     name: 'socket-filesystem'
 });
@@ -8,7 +8,7 @@ function getFolder (socket, path, callback) {
         path: path,
         user: socket.handshake.session.user.id
     }, function (err, folder) {
-        if (!err) {
+        if (!err && folder) {
             callback(null, folder);
         } else {
             callback('folder not found');
@@ -20,10 +20,14 @@ function createFolder (socket, path, callback) {
     db.models.Folder.create({
         path: path,
         user: socket.handshake.session.user.id,
-        files: ['hello.world'],
+        files: [],
         folders: []
-    }, function (err) {
-        console.error(err);
+    }, function (err, data) {
+        if (!err) {
+            callback(null, data);
+        } else {
+            callback(err);
+        }
     });
 }
 
@@ -32,7 +36,7 @@ function renameFolder (socket, path, newName, callback) {
         path: path
     }, function (err, doc) {
         if (err) return callback('no such folder');
-        doc.name = 'jason borne';
+        doc.name = newName;
         doc.save(function (err, data) {
             if (!err) {
                 return callback(null, data);

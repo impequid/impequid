@@ -1,6 +1,8 @@
-// require external
+// require
 var express = require('express');
-var db = require('./modules/db');
+
+// database & http-server
+var db = require('./modules/database');
 var server = require('./modules/server');
 
 // initialize socket.io

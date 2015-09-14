@@ -2,10 +2,12 @@ var expect = require('expect.js');
 var SimpleChild = require('simple-child');
 var sioc = require('socket.io-client');
 var Log = require('compact-log');
+var log = new Log({
+    levelMode: 'smartNoBrackets',
+    clear: true
+});
 
-var config = require('../../modules/config');
-
-var prepare = require('../prepare');
+var config = require('../modules/config');
 
 describe('login', function () {
 	// via http://stackoverflow.com/a/15553045/2857873
@@ -15,10 +17,7 @@ describe('login', function () {
         this.timeout(4000);
 		child = new SimpleChild('node ' + __dirname + '/../index.js');
 		child.start();
-        setTimeout(function () {
-            prepare.createUser();
-            done();
-        }, 2500);
+        setTimeout(done, 2500);
 	});
 
 	beforeEach(function (done) {

@@ -44,7 +44,7 @@ var LoginMain = React.createClass({
 			<div className={this.state.loginButtonClasses}>
 				<form className="ui form" onSubmit={this.login}>
 					<h3>
-						<i className="sign in icon"></i> Home Network Login
+						<i className="sign in icon"></i> home cloud login
 					</h3>
 					<div className="field">
 						<div className="ui icon input">

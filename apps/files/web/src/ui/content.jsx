@@ -13,8 +13,8 @@ module.exports = React.createClass({
     },
     render: function render () {
 		return (
-			<div className="fourteen wide column" style={{paddingLeft: 0, paddingTop: 0, borderRadius: 0}}>
-				<table className="ui selectable celled structured table">
+			<div className={'col span-' + this.props.width + '-of-12'}>
+				<table className="ui selectable celled structured table" style={{borderRadius: 0}}>
 					<thead>
 						<tr>
 							<th rowSpan="2">Name</th>
@@ -71,9 +71,5 @@ module.exports = React.createClass({
 				</table>
             </div>
 		);
-        // <div className="ui bottom attached segment">
-	},
-    componentDidMount: function componentDidMount () {
-        // $('.sidebar').sidebar();
-    }
+	}
 });
