@@ -1,30 +1,24 @@
 var React = require('react');
 
-var Link = require('react-router').Link;
-
-var Menu = React.createClass({
+var Component = React.createClass({
 	render: function render () {
 		return (
-			<nav className="ui visible inverted left vertical sidebar menu">
-				<a className="item">
-					<i className="home icon"></i>
-					Home
+			<nav className="ui stackable borderless menu" style={{border: 0, borderRadius: 0, margin: 0}}>
+				<a className="borderless item">
+					<i className="add icon"></i> new note
 				</a>
-				<a className="item">
-					<i className="block layout icon"></i>
-					Topics
-				</a>
-				<a className="item">
-					<i className="smile icon"></i>
-					Friends
-				</a>
-				<a className="item">
-					<i className="calendar icon"></i>
-					History
-				</a>
+				<div className="item">
+					title
+				</div>
+				<nav className="right borderless menu" style={{border: 0, borderRadius: 0}}>
+					<a className="item">
+						<i className="edit icon"></i>
+						edit
+					</a>
+				</nav>
 			</nav>
 		);
 	}
 });
 
-module.exports = Menu;
+module.exports = Component;

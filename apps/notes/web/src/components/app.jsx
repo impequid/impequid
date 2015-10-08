@@ -1,17 +1,17 @@
 var React = require('react');
 var RouteHandler = require('react-router').RouteHandler;
 
+var SideBar = require('./sidebar.jsx');
 var Menu = require('./menu.jsx');
 
 var App = React.createClass({
 	render: function render () {
 		return (
-			<div id="fuck-react" className="ui bottom attached segment pushable">
+			<div>
 				<Menu/>
-				<div className="pusher">
-					<div className="ui basic segment">
-						<RouteHandler/>
-					</div>
+				<div>
+					<SideBar/>
+					<RouteHandler/>
 				</div>
 			</div>
 		);

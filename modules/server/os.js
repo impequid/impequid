@@ -3,6 +3,10 @@ var cors = require('cors');
 var session = require('../sessions').session;
 var config = require('../config');
 
+var log = require('../log').createNamespace({
+	name: 'http-os'
+});
+
 var whitelist = [
 	'https://os.dodekeract.report'
 ];
@@ -12,7 +16,7 @@ var corsOptions = {
 		callback(null, originIsWhitelisted);
 	}
 };
-var app = express();
+var app = express.Router();
 
 app.use(cors(corsOptions));
 

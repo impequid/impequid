@@ -5,6 +5,7 @@ var reactify = require('reactify');
 var download = require('gulp-download');
 var runSequence = require('run-sequence');
 var watch = require('gulp-watch');
+// var uglify = require('gulp-uglify');
 
 var path = {
 	HTML: 'web/src/index.html',
@@ -27,9 +28,11 @@ var path = {
 
 	APPS: 'apps',
 
-	APP_ENTRY_POINT: 'apps/files/web/src/main.jsx',
+	FILES_ENTRY_POINT: 'apps/files/web/src/main.jsx',
+	FILES_DEST: 'apps/files/web/dist',
 
-	APP_DEST: 'apps/files/web/dist',
+	NOTES_ENTRY_POINT: 'apps/notes/web/src/main.jsx',
+	NOTES_DEST: 'apps/notes/web/dist',
 
 	STATIC: 'web/static'
 };
@@ -95,6 +98,7 @@ gulp.task('build', function () {
 			path.basename = 'app';
 			path.extname = '.js';
 		}))
+		// .pipe(uglify())
 		.pipe(gulp.dest(path.DEST));
 });
 
@@ -137,19 +141,26 @@ gulp.task('autobuildnodownload', function (callback) {
 	});
 });
 
-gulp.task('app', function (callback) {
+gulp.task('download', function (callback) {
+	return download(url.socketIOClient)
+		.pipe(gulp.dest(path.STATIC));
+});
+
+// files
+
+gulp.task('files', function (callback) {
 	return runSequence(
-		['copyAppHTML', 'buildApp']
+		['copyFilesHTML', 'buildFiles']
 	);
 });
 
-gulp.task('copyAppHTML', function (callback) {
+gulp.task('copyFilesHTML', function (callback) {
 	return gulp.src(path.APPS + '/files/web/src/index.html')
 		.pipe(gulp.dest(path.APPS + '/files/web/dist'));
 });
 
-gulp.task('buildApp', function (callback) {
-	return gulp.src(path.APP_ENTRY_POINT)
+gulp.task('buildFiles', function (callback) {
+	return gulp.src(path.FILES_ENTRY_POINT)
 		.pipe(browserify({
 			transform: [reactify]
 		}))
@@ -157,10 +168,30 @@ gulp.task('buildApp', function (callback) {
 			path.basename = 'app';
 			path.extname = '.js';
 		}))
-		.pipe(gulp.dest(path.APP_DEST));
+		.pipe(gulp.dest(path.FILES_DEST));
 });
 
-gulp.task('download', function (callback) {
-	return download(url.socketIOClient)
-		.pipe(gulp.dest(path.STATIC));
+// notes
+
+gulp.task('notes', function (callback) {
+	return runSequence(
+		['copyNotesHTML', 'buildNotes']
+	);
+});
+
+gulp.task('copyNotesHTML', function (callback) {
+	return gulp.src(path.APPS + '/notes/web/src/index.html')
+		.pipe(gulp.dest(path.APPS + '/notes/web/dist'));
+});
+
+gulp.task('buildNotes', function (callback) {
+	return gulp.src(path.NOTES_ENTRY_POINT)
+		.pipe(browserify({
+			transform: [reactify]
+		}))
+		.pipe(rename(function (path) {
+			path.basename = 'app';
+			path.extname = '.js';
+		}))
+		.pipe(gulp.dest(path.NOTES_DEST));
 });

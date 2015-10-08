@@ -1,11 +1,8 @@
 // dependencies
 var io = require('socket.io-client');
-var Router = require('react-router');
-var React = require('react');
 var sui = require('semantic-ui');
-
-// api
-var api = require('./api/');
+var React = require('react');
+var Router = require('react-router');
 
 // routes
 var App = require('./app.jsx');
@@ -16,26 +13,21 @@ var Login = require('./login/login.jsx');
 var Register = require('./login/register.jsx');
 var LoginMain = require('./login/main.jsx');
 
-var Header = require('./layout/header.jsx');
-
-// alias
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
+var Settings = require('./settings.jsx');
 
 // setup routes
 var routes = (
-	<Route>
-		<Route name="main" path="/" handler={App}>
-			<DefaultRoute name="dashboard" handler={Dashboard}/>
-			<Route name="app" path="app/:name" handler={AppLoader}/>
-		</Route>
-		<Route name="login" path="login" handler={Login}>
-			<Route name="register" handler={Register}/>
-			<DefaultRoute handler={LoginMain}/>
-		</Route>
-	</Route>
+	<Router.Route>
+		<Router.Route name="main" path="/" handler={App}>
+			<Router.DefaultRoute name="dashboard" handler={Dashboard}/>
+			<Router.Route name="app" path="app/:name" handler={AppLoader}/>
+			<Router.Route name="settings" path="settings" handler={Settings}/>
+		</Router.Route>
+		<Router.Route name="login" path="login" handler={Login}>
+			<Router.Route name="register" handler={Register}/>
+			<Router.DefaultRoute handler={LoginMain}/>
+		</Router.Route>
+	</Router.Route>
 );
 
 function renderRoute () {
@@ -55,7 +47,6 @@ $(document).ready(function () {
 		reconnection: false
 	});
 	window.socket.on('connect', function () {
-		renderRoute();
 		$('.dimmer').dimmer('hide');
 		console.info('socket connected');
 		// verify login
@@ -66,7 +57,9 @@ $(document).ready(function () {
 					location.href = '#/login';
 				} else {
 					console.info('already logged in');
-					location.href = '#/';
+					if (location.href === '#/login' || location.href === '#/register') {
+						location.href = '#/';
+					}
 				}
 				if (!routeRendered) {
 					routeRendered = true;
@@ -102,4 +95,4 @@ var reconnect = {
 			reconnect.timeout = setTimeout(reconnect.attempt, reconnect.delay);
 		});
 	}
-}
+};

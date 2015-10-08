@@ -2,6 +2,10 @@
 var db = require('../database');
 var crypt = require('../crypto');
 var config = require('../config');
+var log = require('../log').createNamespace({
+	name: 'socket-session'
+});
+var filesystem = require('../socket/filesystem');
 
 function register (socket, data, callback) {
 	if (!data || !(data.secret && data.password && data.username && data.email)) {
@@ -13,9 +17,15 @@ function register (socket, data, callback) {
 			password: hashed.password,
 			email: data.email,
 			salt: hashed.salt
-		}, function (err) {
+		}, function (err, data) {
 			if (!err) {
-				callback(null, true);
+				filesystem.init(data._id.toString(), function (err, data) {
+					if (!err) {
+						callback(null, true);
+					} else {
+						callback(true);
+					}
+				});
 			} else {
 				callback(true);
 			}

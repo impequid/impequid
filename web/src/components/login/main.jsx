@@ -47,13 +47,13 @@ var LoginMain = React.createClass({
 						<i className="sign in icon"></i> home cloud login
 					</h3>
 					<div className="field">
-						<div className="ui icon input">
+						<div className="ui icon input" style={{width: '100%'}}>
 							<input type="email" onChange={this.changeEmail} placeholder="your email" required/>
 							<i className="mail icon"></i>
 						</div>
 					</div>
 					<div className="field">
-						<div className="ui icon input">
+						<div className="ui icon input" style={{width: '100%'}}>
 							<input type="password" onChange={this.changePassword} placeholder="password" required/>
 							<i className="lock icon"></i>
 						</div>

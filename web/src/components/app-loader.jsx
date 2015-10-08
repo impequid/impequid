@@ -1,46 +1,39 @@
 var React = require('react');
 
-var Dashboard = React.createClass({
-	getInitialState: function () {
-		return {
-			content: (<div>getting token</div>)
-		}
-	},
-	componentDidMount: function componentDidMount (name) {
-		name = name || this.props.params.name;
-		var that = this;
-		window.socket.emit('token:create', name, function (err, token) {
-			console.log(err, token);
-			if (!err) {
-				var hostname = location.hostname.substring(3);
-				var port = location.port || 443;
-				console.log(hostname);
-				that.setState({
-					content: (<iframe className="application" src={'https://' + name + '.' + hostname + ':' + port + '?token=' + token}></iframe>)
-				});
-			} else {
-				that.setState({
-					content: (<div>error creating token: {err}</div>)
-				});
-			}
-		})
+var store = require('../stores');
+var actions = require('../actions');
+
+var Component = React.createClass({
+	getInitialState: store.application.getState,
+	componentDidMount: function componentDidMount () {
+		this._update(this.props.params.name);
+		store.application.addChangeListener(this._onChange);
 	},
 	componentWillReceiveProps: function (nextProps) {
-		this.componentDidMount(nextProps.params.name);
+		this._update(nextProps.params.name);
 	},
-	getToken: function () {
-		var that = this;
-		window.socket.emit('token:create', 'notes', function (err, token) {
-			if (!err) that.setState({
-				token: token
-			});
-		});
+	componentWillUnmount: function componentWillUnmount () {
+		store.application.removeChangeListener(this._onChange);
 	},
 	render: function render () {
-		return (
-			this.state.content
-		);
+		if (this.state.loading) {
+			return (
+				<div className="ui active inverted dimmer">
+					<div className="ui large indeterminate text loader">loading {this.state.name}</div>
+				</div>
+			);
+		} else if (this.state.token) {
+			return (<iframe className="application" src={'https://' + this.state.name + '.' + this.state.host + ':' + this.state.port + '?token=' + this.state.token}></iframe>);
+		} else {
+			return (<div>error creating token</div>);
+		}
+	},
+	_update: function _update (name) {
+		actions.updateApplication(name);
+	},
+	_onChange: function _onChange () {
+		this.setState(store.application.getState());
 	}
 });
 
-module.exports = Dashboard;
+module.exports = Component;

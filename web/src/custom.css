@@ -1,0 +1,105 @@
+.invisible {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.custom-sidebar {
+	border-right: 1px solid #ccc;
+	position: fixed;
+	left: 0;
+	top: 40px;
+	bottom: 0;
+}
+
+.custom-content: {
+	position: fixed;
+	right: 0;
+	top: 40px;
+	bottom: 0;
+}
+
+/*  SECTIONS  */
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+	display: block;
+	float:left;
+	margin: 0% 0 0% 0%;
+}
+.col:first-child { margin-left: 0; }
+
+/*  GROUPING  */
+.group:before, .group:after {
+	content:"";
+	display:table;
+}
+.group:after {
+	clear:both;
+}
+
+/*  GRID OF TWELVE  */
+.span-12-of-12 {
+	width: 100%;
+}
+
+.span-11-of-12 {
+	width: 91.666666%;
+}
+.span-10-of-12 {
+	width: 83.333333%;
+}
+
+.span-9-of-12 {
+	width: 75%;
+}
+
+.span-8-of-12 {
+	width: 66.666666%;
+}
+
+.span-7-of-12 {
+	width: 58.333333%;
+}
+
+.span-6-of-12 {
+	width: 50%;
+}
+
+.span-5-of-12 {
+	width: 41.666666%;
+}
+
+.span-4-of-12 {
+	width: 33.333333%;
+}
+
+.span-3-of-12 {
+	width: 25%;
+}
+
+.span-2-of-12 {
+	width: 16.666666%;
+}
+
+.span-1-of-12 {
+	width: 8.333333%;
+}
+
+/*  GO FULL WIDTH BELOW 480 PIXELS */
+@media only screen and (max-width: 480px) {
+	.col {
+		margin: 1% 0 1% 0%;
+	}
+	.span-1-of-12, .span-2-of-12, .span-3-of-12, .span-4-of-12, .span-5-of-12, .span-6-of-12, .span-7-of-12, .span-8-of-12, .span-9-of-12, .span-10-of-12, .span-11-of-12, .span-12-of-12 {
+		width: 100%;
+	}
+}

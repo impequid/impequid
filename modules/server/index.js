@@ -18,6 +18,11 @@ var log = require('../log').createNamespace({
 	colors: ['bgYellowBright', 'black']
 });
 
+function cleanPath (folder) {
+    return path.join('/', folder);
+}
+var root = path.join(config.root, config.filesystem.path);
+
 // core
 var osApp = require('./os.js');
 
@@ -32,12 +37,18 @@ for (var i = 0; i < appNames.length; i++) {
 	var name = appNames[i];
 	apps[name] = {};
 	apps[name].router = express.Router();
+	apps[name].router.use(session);
+	apps[name].router.use('/files/*', function (req, res) {
+		if (req.session.user) {
+			res.sendFile(path.join(root, req.session.user.id, cleanPath(req.params[0])));
+		}
+	});
 	apps[name].router.use(express.static(path.join(config.root, config.applications.path, name , '/web/dist')));
 }
 
 // static files
 
-var staticApp = express();
+var staticApp = express.Router();
 staticApp.use(function(req, res, next) { // allow access from all origins
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -47,7 +58,7 @@ staticApp.use(express.static(path.join(config.root, '/web/static')));
 
 // vhost
 
-var forwarder = express();
+var forwarder = express.Router();
 	forwarder.all('*', function (req, res) {
 		res.redirect('https://' + config.host.name + req.url);
 	});

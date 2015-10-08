@@ -34,8 +34,8 @@ function init (servers) {
 	// connection listener
 	io.on('connection', function (socket) {
 		var subdomain = socket.handshake.headers.host.split('.')[0];
-		log.debug(subdomain);
 		if (subdomain === 'os' || config.whitelist && config.whitelist.indexOf(subdomain) !== -1) { // user api
+			// session
 			socket.on('session:login', function (data, callback) {
 				session.login(socket, data, callback);
 			});
@@ -48,6 +48,7 @@ function init (servers) {
 			socket.on('session:verify', function (callback) {
 				session.verify(socket, callback);
 			});
+			// token
 			socket.on('token:create', function (app, callback) {
 				token.create(socket, app, callback);
 			});
@@ -57,7 +58,7 @@ function init (servers) {
 			socket.on('token:digest', function (possibleToken, callback) {
 				token.digest(socket, possibleToken, callback);
 			});
-			// fs
+			// filesystem.folder
 			socket.on('filesystem:folder:get', function (path, callback) {
 				filesystem.getFolder(socket, path, callback);
 			});
@@ -66,6 +67,19 @@ function init (servers) {
 			});
 			socket.on('filesystem:folder:rename', function (path, newName, callback) {
 				filesystem.renameFolder(socket, path, newName, callback);
+			});
+			socket.on('filesystem:folder:delete', function (path, callback) {
+				filesystem.deleteFolder(socket, path, callback);
+			});
+			// filesystem.file
+			socket.on('filesystem:file:get', function (path, callback) {
+				filesystem.getFile(socket, path, callback);
+			});
+			socket.on('filesystem:file:rename', function (path, newPath, callback) {
+				filesystem.renameFile(socket, path, newPath, callback);
+			});
+			socket.on('filesystem:file:delete', function (path, callback) {
+				filesystem.deleteFile(socket, path, callback);
 			});
 		}
 
@@ -84,17 +98,8 @@ function init (servers) {
 		});
 
 		// socket.io-stream
-		sios(socket).on('file', function (readStream, data) {
-			var filename = path.basename(data.name);
-			log.debug(filename);
-			// JUST DO IT
-			var writeStream = gridFS.gridFS.createWriteStream({
-			    filename: filename
-			});
-			readStream.pipe(writeStream);
-			writeStream.on('close', function (file) {
-			    log.info(file.filename + 'Written To DB');
-			});
+		sios(socket).on('file', function (readStream, meta) {
+			filesystem.createFile(socket, readStream, meta);
 		});
 	});
 }
