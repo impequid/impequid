@@ -4,7 +4,7 @@ var path = require('path');
 var store = require('../stores');
 var actions = require('../actions');
 
-module.exports = React.createClass({
+var Component = React.createClass({
     getInitialState: store.getViewerState,
     componentDidMount: function componentDidMount () {
         store.addChangeListener(this._onChange);
@@ -113,3 +113,5 @@ var FileView = React.createClass({
         actions.downloadFile(this.props.path);
     }
 });
+
+module.exports = Component;

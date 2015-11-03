@@ -21,15 +21,15 @@ var log = require('../log').createNamespace({
 function cleanPath (folder) {
     return path.join('/', folder);
 }
-var root = path.join(config.root, config.filesystem.path);
+var filesystemRoot = path.join(config.root, config.filesystem.path);
 
 // core
 var osApp = require('./os.js');
 
 // apps
 
-var appNames = fs.readdirSync(config.applications.path).filter(function(file) {
-	return fs.statSync(path.join(config.applications.path, file)).isDirectory();
+var appNames = fs.readdirSync(path.join(config.root, config.applications.path)).filter(function (file) {
+	return fs.statSync(path.join(config.root, config.applications.path, file)).isDirectory();
 });
 var apps = {};
 
@@ -40,10 +40,24 @@ for (var i = 0; i < appNames.length; i++) {
 	apps[name].router.use(session);
 	apps[name].router.use('/files/*', function (req, res) {
 		if (req.session.user) {
-			res.sendFile(path.join(root, req.session.user.id, cleanPath(req.params[0])));
+			res.sendFile(path.join(filesystemRoot, req.session.user.id, cleanPath(req.params[0])));
 		}
 	});
 	apps[name].router.use(express.static(path.join(config.root, config.applications.path, name , '/web/dist')));
+}
+
+// custom
+
+var customNames = fs.readdirSync(path.join(config.root, config.custom.path)).filter(function (file) {
+	return fs.statSync(path.join(config.root, config.custom.path, file)).isDirectory();
+});
+var custom = {};
+
+for (var j = 0; j < customNames.length; j++) {
+	var name = customNames[j];
+	custom[name] = {};
+	custom[name].router = require(path.join(config.root, config.custom.path, name));
+	custom[name].router.use(express.static(path.join(config.root, config.custom.path, name, '/web/dist')));
 }
 
 // static files
@@ -80,6 +94,14 @@ var app = express();
 		app.use(vhost(i + '.' + config.host.name, apps[i].router));
 	}
 
+	// custom
+	for (var j in custom) {
+		if (j === 'main') {
+			app.use(vhost(config.host.name, custom[j].router));
+		}
+		app.use(vhost(j + '.' + config.host.name, custom[j].router));
+	}
+
 	// wildcard
 
 	app.use(vhost('*', forwarder));
@@ -89,10 +111,10 @@ var httpServer = http.createServer(app).listen(config.http.port, function () {
 	log.info('HTTP is running on port ' + config.http.port);
 });
 
-// redirect https to http
+// https
 var httpsServer = https.createServer({
-	key: fs.readFileSync(config.root + '/ssl/private.key', 'utf8'),
-	cert: fs.readFileSync(config.root + '/ssl/certificate.crt', 'utf8')
+	key: config.https.privateKey,
+	cert: config.https.certificate
 }, app).listen(config.https.port, function () {
 	log.info('HTTPS is running on port ' + config.https.port);
 });

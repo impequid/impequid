@@ -9,17 +9,11 @@ var Content = require('./components/content.jsx');
 window.store = require('./stores');
 var actions = require('./actions');
 
-// alias
-var DefaultRoute = Router.DefaultRoute;
-var Link = Router.Link;
-var Route = Router.Route;
-var RouteHandler = Router.RouteHandler;
-
 // setup routes
 var routes = (
-	<Route name="main" path="/" handler={SpookySkeleton}>
-		<DefaultRoute name="content" handler={Content}/>
-	</Route>
+	<Router.Route name="main" path="/" handler={SpookySkeleton}>
+		<Router.DefaultRoute name="content" handler={Content}/>
+	</Router.Route>
 );
 
 function renderRoute () {
@@ -32,7 +26,7 @@ function renderRoute () {
 window.getParameterByName = function (name) {
     var match = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-}
+};
 var urlToken = window.getParameterByName('token');
 
 $(document).ready(function () {
@@ -65,11 +59,11 @@ window.fancyFileSize = function fancyFileSize (size, precision) {
         prec = Math.pow(10, precision);
 
     return (Math.round((size*prec)/unit)/prec + ' ' + names[i]);
-}
+};
 
 window.generateUUID = function () {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
 		var r = 16 * Math.random() | 0;
 		return ('x' === c ? r : r & 3 | 8).toString(16);
 	});
-}
+};

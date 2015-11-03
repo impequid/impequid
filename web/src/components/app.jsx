@@ -7,7 +7,7 @@ var RouteHandler = require('react-router').RouteHandler;
 var App = React.createClass({
 	render: function render () {
 		return (
-			<div id="fuck-react">
+			<div>
 				<Header/>
 				<div className="application">
 					<RouteHandler/>

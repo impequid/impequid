@@ -6,3 +6,10 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/impequid.svg)](https://npmjs.com/package/impequid)
 [![NPM Dependencies](https://david-dm.org/dodekeract/impequid.png)](https://npmjs.com/package/impequid)
 [![Code Documentation](https://inch-ci.org/github/dodekeract/impequid.svg)](https://inch-ci.org/github/dodekeract/impequid)
+
+## Installation Guide
+- `git clone https://github.com/dodekeract/impequid`
+- `cd impequid`
+- `npm install`
+- `gulp complete`
+- `sudo npm run production`

@@ -1,78 +1,66 @@
 // require internal
 var db = require('../database');
-var crypt = require('../crypto');
 var config = require('../config');
 var log = require('../log').createNamespace({
 	name: 'socket-session'
 });
 var filesystem = require('../socket/filesystem');
+var Notion = require('../../../notion');
+
+var notion = new Notion(db.connection, {
+	pepper: config.crypto.pepper,
+	passwordMin: config.crypto.passwordMin,
+	passwordMax: config.crypto.passwordMax
+});
 
 function register (socket, data, callback) {
-	if (!data || !(data.secret && data.password && data.username && data.email)) {
-		callback(true);
-	} else if ((data.secret === config.sessions.password && data.password.length >= 8)) {
-		var hashed = crypt.createPassword(data.password);
-		db.models.User.create({
-			username: data.username,
-			password: hashed.password,
-			email: data.email,
-			salt: hashed.salt
-		}, function (err, data) {
+	if (data.secret === config.sessions.password) {
+		notion.register(function (err, data) {
 			if (!err) {
 				filesystem.init(data._id.toString(), function (err, data) {
 					if (!err) {
-						callback(null, true);
+						return callback(null, true);
 					} else {
-						callback(true);
+						return callback(true);
 					}
 				});
 			} else {
-				callback(true);
+				return callback(true);
 			}
 		});
 	} else {
-		callback(true);
+		return callback(true);
 	}
 }
 
 function login (socket, data, callback) {
-	if (data && data.email && data.password) {
-		db.models.User.findOne({email: data.email}, 'password salt username _id', function(err, user) {
-			if (!user) {
-				callback(true, false);
-			} else {
-				if (crypt.checkPassword(data.password, user.password, user.salt)) {
-                    socket.handshake.session.loggedIn = true;
-                    socket.handshake.session.user = {
-                        username: user.username,
-                        email: data.email,
-						id: user._id
-                    };
-                    socket.handshake.session.save();
-                    callback(null, true);
-				} else {
-                    callback(true, false);
-				}
-			}
-		});
-	} else {
-		callback(true);
-	}
+	notion.login(socket.handshake.session, data.email, data.password, function (err, data) {
+		if (!err) {
+			return callback(null, true);
+		} else {
+			return callback(true);
+		}
+	});
 }
 
 function logout (socket, callback) {
-    delete socket.handshake.session.loggedIn;
-	delete socket.handshake.session.user;
-	socket.handshake.session.save();
-	callback(null, true);
+    notion.logout(socket.handshake.session, function (err, data) {
+		if (!err) {
+			return callback(null, true);
+		} else {
+			return callback(true);
+		}
+	});
 }
 
 function verify (socket, callback) {
-	if (socket.handshake.session.loggedIn) {
-		callback(null, socket.handshake.session.user);
-	} else {
-		callback(true, null);
-	}
+	notion.verify(socket.handshake.session, function (err, data) {
+		if (!err ) {
+			return callback(null, true);
+		} else {
+			return callback(true);
+		}
+	});
 }
 
 module.exports = {

@@ -1,1 +1,0 @@
-nodemon --exec "mocha" *.js

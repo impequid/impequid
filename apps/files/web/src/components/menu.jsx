@@ -10,7 +10,7 @@ var path = require('path');
 
 var Menu = React.createClass({
 	createFolder: function createFolder () {
-		actions.createFolder(prompt('Name?',path.join(this.state.path, '/folder/')));
+		actions.createFolder(path.join(this.state.path, prompt('Name?','folder')));
 	},
 	getInitialState: store.getViewerState,
     componentDidMount: function componentDidMount () {

@@ -23,12 +23,6 @@ connection.once('open', function () {
 	gridFS.init(connection, mongoose.mongo);
 });
 
-models.User = connection.model('User', {
-	username: {type: String, unique: true, required: true, dropDubs: true, index: true},
-	password: {type: String, required: true},
-	email: {type: String, unique: true, required: true, dropDubs: true, index: true},
-	salt: {type: String, required: true}
-});
 models.Folder = connection.model('Folder', {
 	path: {type: String, unique: true, required: true, dropDubs: true, index: true},
 	user: {type: ObjectId, required: true, index: true},

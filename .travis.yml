@@ -10,3 +10,4 @@ before_install:
   - npm install
 script:
   - npm run travis
+  - npm run sectest

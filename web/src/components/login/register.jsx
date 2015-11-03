@@ -1,124 +1,25 @@
 var React = require('react');
 
-var Register = React.createClass({
-	getInitialState: function getInitialState () {
-		return {
-			step: 0,
-			username: '',
-			password: '',
-			email: ''
-		}
+var store = require('../../stores/login.js');
+var actions = require('../../actions');
+
+var Component = React.createClass({
+	getInitialState: store.getState,
+	componentDidMount: function componentDidMount () {
+		store.addChangeListener(this._onChange);
 	},
-	nextStep: function nextStep (e) {
-		e.preventDefault();
-		if (this.state.step < 2) {
-			// check if current step is valid
-			if (this.state.step === 0) {
-				if (this.isValid('email') && this.isValid('password')) {
-					this.setState({
-						step: this.state.step + 1,
-						showErrors: false
-					});
-				} else {
-					this.setState({
-						showErrors: true
-					});
-				}
-			} else {
-				if (this.isValid('username')) {
-					this.setState({
-						step: this.state.step + 1,
-						showErrors: false
-					});
-				} else {
-					this.setState({
-						showErrors: true
-					});
-				}
-			}
-		}
-	},
-	isValid: function isValid (key) {
-		switch (key) {
-			case 'email':
-				var regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-				return regex.test(this.state.email);
-			break;
-			case 'username':
-				return this.state.username.length >= 4;
-			break;
-			case 'password':
-				return this.state.password.length >= 8;
-			break;
-			default:
-				return this.state.email.length > 0 && this.state.username.length > 0 && this.state.password.length >= 8;
-		}
-	},
-	previousStep: function previousStep () {
-		if (this.state.step > 0) {
-			this.setState({
-				step: this.state.step - 1,
-				showErrors: false
-			});
-		}
-	},
-	register: function register (e) {
-		var that = this;
-		e.preventDefault();
-		window.socket.emit('session:register', {
-			email: that.state.email,
-			password: that.state.password,
-			username: that.state.username,
-			secret: prompt('Secret?')
-		}, function (err, data) {
-			if (!err) {
-				socket.emit('login', {
-					email: that.state.email,
-					password: that.state.password
-				}, function (err, data) {
-					if (!err) {
-						localStorage.hasSession = true;
-						location.href = '#/';
-					} else {
-						alert('login failed');
-					}
-				});
-			} else {
-				alert('registration failed')
-			}
-		});
-	},
-	change: function change (key, event) {
-		var nextState = {}
-		nextState[key] = event.target.value
-		this.setState(nextState);
-	},
-	changeUsername: function changeUsername (event) {
-		this.change('username', event);
-	},
-	changePassword: function changePassword (event) {
-		this.change('password', event);
-	},
-	changeEmail: function changeEmail (event) {
-		this.change('email', event);
+	componentWillUnmount: function componentWillUpdate () {
+		store.removeChangeListener(this._onChange);
 	},
 	renderSteps: function renderSteps () {
-		var stepClasses = [
-			'step',
-			'step',
-			'step'
-		];
-		// assign classes
+		var stepClasses = [];
+
 		for (var i = 0; i < 3; i++) {
-			if (i === 0 && this.isValid('email') && this.isValid('password')) {
-				stepClasses[i] += ' completed';
-			} else if (i === 1 && this.isValid('username')) {
-				stepClasses[i] += ' completed';
-			}
-			if (i === this.state.step) {
-				stepClasses[i] += ' active';
-			}
+			stepClasses.push(this.state.steps[i].valid ? 'completed step':'step');
 		}
+
+		stepClasses[this.state.step] += ' active';
+
 		return (
 			<div className="ui small steps">
 				<div className={stepClasses[0]}>
@@ -147,26 +48,28 @@ var Register = React.createClass({
 		var nextButtonClasses = 'ui button';
 		switch (this.state.step) {
 			case 0:
-				if (this.isValid('email') && this.isValid('password')) {
+				if (this.state.steps[0].valid) {
 					nextButtonClasses += ' positive';
 				}
+
 				backButton = (<a href="#/login" className="ui negative button">Cancel</a>);
 				nextButton = (<input type="submit" className={nextButtonClasses} value="Next"/>);
 			break;
 			case 1:
-				if (this.isValid('username')) {
+				if (this.state.steps[0].valid) {
 					nextButtonClasses += ' positive';
 				}
-				backButton = (<div className="ui button" onClick={this.previousStep}>Back</div>);
+
+				backButton = (<div className="ui button" onClick={actions.stepBack}>Back</div>);
 				nextButton = (<input type="submit" className={nextButtonClasses} value="Next"/>);
 			break;
 			case 2:
-				if (!this.isValid()) {
-					nextButtonClasses += ' disabled';
-				} else {
+				if (this.state.allValid) {
 					nextButtonClasses += ' positive';
+				} else {
+					nextButtonClasses += ' disabled';
 				}
-				backButton = (<div className="ui button" onClick={this.previousStep}>Back</div>);
+				backButton = (<div className="ui button" onClick={actions.stepBack}>Back</div>);
 				nextButton = (<input type="submit" className={nextButtonClasses} value="Register"/>);
 			break;
 		}
@@ -185,20 +88,16 @@ var Register = React.createClass({
 	renderStepContent: function renderStepContent () {
 		switch (this.state.step) {
 			case 0:
-				var emailClasses = 'field';
-				if (this.state.showErrors && !this.isValid('email')) {
-					emailClasses += ' error';
-				}
-				var passwordClasses = 'field';
-				if (this.state.showErrors && !this.isValid('password')) {
-					passwordClasses += ' error';
-				}
+				var emailClasses = 'field',
+					passwordClasses = 'field';
 				var errorMessage, emailError, passwordError;
 				if (this.state.showErrors) {
-					if (!this.isValid('email')) {
+					if (!this.state.email.valid) {
+						emailClasses += ' error';
 						emailError = (<p>Invalid E-Mail Address.</p>);
 					}
-					if (!this.isValid('password')) {
+					if (!this.state.password.valid) {
+						passwordClasses += ' error';
 						passwordError = (<p>Your Password is too short.</p>);
 					}
 					if (emailError || passwordError) {
@@ -211,19 +110,19 @@ var Register = React.createClass({
 					}
 				}
 				return (
-					<form className="ui form" onSubmit={this.nextStep} autocomplete="off">
+					<form className="ui form" onSubmit={actions.stepForward} autoComplete="off">
 						{errorMessage}
 						<div className={emailClasses}>
 							<label>E-Mail</label>
-							<div className="ui icon input">
-								<input type="email" placeholder="your@e-mail.tld" value={this.state.email} onChange={this.changeEmail} required/>
+							<div className="ui icon input" style={{width: '100%'}}>
+								<input type="email" placeholder="your@e-mail.tld" value={this.state.email.data} onChange={actions.changeEmail} required/>
 								<i className="mail icon"></i>
 							</div>
 						</div>
 						<div className={passwordClasses}>
 							<label>Password</label>
-							<div className="ui icon input">
-								<input type="password" value={this.state.password} onChange={this.changePassword} required/>
+							<div className="ui icon input" style={{width: '100%'}}>
+								<input type="password" value={this.state.password.data} onChange={actions.changePassword} required/>
 								<i className="lock icon"></i>
 							</div>
 						</div>
@@ -233,24 +132,24 @@ var Register = React.createClass({
 			break;
 			case 1:
 				var usernameClasses = 'field';
-				if (this.state.showErrors && !this.isValid('username')) {
-					usernameClasses += ' error';
-				}
 				var errorMessage, usernameError;
-				if (this.state.showErrors && !this.isValid('username')) {
+
+				if (this.state.showErrors && !this.state.username.valid) {
+					usernameClasses += ' error';
 					errorMessage = (
 						<div className="ui visible error message">
 							<p>Your username is too short.</p>
 						</div>
 					);
 				}
+
 				return (
-					<form className="ui form" onSubmit={this.nextStep} autocomplete="off">
+					<form className="ui form" onSubmit={actions.stepForward} autoComplete="off">
 						{errorMessage}
 						<div className={usernameClasses}>
 							<label>Username</label>
-							<div className="ui icon input">
-								<input type="text" placeholder="username" value={this.state.username} onChange={this.changeUsername} required/>
+							<div className="ui icon input" style={{width: '100%'}}>
+								<input type="text" placeholder="username" value={this.state.username.data} onChange={actions.changeUsername} required/>
 								<i className="user icon"></i>
 							</div>
 						</div>
@@ -260,7 +159,7 @@ var Register = React.createClass({
 			break;
 			case 2:
 				return (
-					<form onSubmit={this.register} autocomplete="off">
+					<form onSubmit={actions.register} autoComplete="off">
 						<table className="ui unstackable table">
 							<thead>
 								<tr>
@@ -271,15 +170,15 @@ var Register = React.createClass({
 							<tbody>
 								<tr>
 									<td><i className="user icon"></i> Username</td>
-									<td>{this.state.username}</td>
+									<td>{this.state.username.data}</td>
 								</tr>
-								<tr className="center aligned">
+								<tr>
 									<td><i className="mail icon"></i> Email</td>
-									<td>{this.state.email}</td>
+									<td>{this.state.email.data}</td>
 								</tr>
 								<tr>
 									<td><i className="lock icon"></i> Password</td>
-									<td>{this.state.password.length} Characters</td>
+									<td>{this.state.password.data.length} Characters</td>
 								</tr>
 							</tbody>
 						</table>
@@ -297,7 +196,10 @@ var Register = React.createClass({
 				{this.renderStepContent()}
 			</div>
 		);
+	},
+	_onChange: function _onChange () {
+		this.setState(store.getState());
 	}
 });
 
-module.exports = Register;
+module.exports = Component;

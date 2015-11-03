@@ -12,6 +12,7 @@ var gridFS = require('../grid-fs.js');
 var session = require('./session');
 var token = require('./token');
 var filesystem = require('./filesystem');
+var notifications = require('./notifications');
 
 // set up log
 var log = require('../log').createNamespace({
@@ -80,6 +81,10 @@ function init (servers) {
 			});
 			socket.on('filesystem:file:delete', function (path, callback) {
 				filesystem.deleteFile(socket, path, callback);
+			});
+			// notifications
+			socket.on('notifications:show', function (options, callback) {
+				notifications.show(socket, options, callback);
 			});
 		}
 

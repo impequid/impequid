@@ -12,3 +12,6 @@ config/*/
 !config/
 !config/default/
 !config/travis/
+
+# custom-apps
+custom/*/web/dist/

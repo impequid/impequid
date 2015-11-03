@@ -9,9 +9,27 @@ module.exports = {
 		'APPLICATION_CHANGE'
 	]),
 	main: fluxConstants([
-		'LOGOUT'
+		'LOGOUT',
+		'HANDLE_DISCONNECT',
+		'CONNECT',
+		'RECONNECT'
 	]),
 	mainEvents: fluxConstants([
+		'CHANGE'
+	]),
+	login: fluxConstants([
+		'LOGIN',
+		'CHANGE_EMAIL',
+		'CHANGE_PASSWORD',
+		'CHANGE_USERNAME',
+		'REGISTER',
+		'STEP_BACK',
+		'STEP_FORWARD'
+	]),
+	notification: fluxConstants([
+		'SHOW_NOTIFICATION'
+	]),
+	notificationEvents: fluxConstants([
 		'CHANGE'
 	])
 };

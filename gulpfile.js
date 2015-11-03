@@ -112,7 +112,7 @@ gulp.task('copyImages', function (callback) {
 		.pipe(gulp.dest(path.DEST_IMAGES));
 });
 
-gulp.task('default', function (callback) {
+gulp.task('download', function (callback) {
 	return runSequence(
 		['copyHTML', 'copyImages'],
 		['downloadSemantic', 'downloadSIO', 'downloadJQuery', 'downloadSemanticCSS', 'downloadSemanticFont'],
@@ -121,7 +121,16 @@ gulp.task('default', function (callback) {
 	);
 });
 
-gulp.task('nodownload', function (callback) {
+gulp.task('complete', function (callback) {
+	return runSequence(
+		['copyHTML','copyImages'],
+		['downloadSemantic', 'downloadSIO', 'downloadJQuery', 'downloadSemanticCSS', 'downloadSemanticFont'],
+		['build', 'files', 'notes'],
+		callback
+	);
+});
+
+gulp.task('default', function (callback) {
 	return runSequence(
 		['copyHTML', 'copyImages'],
 		'build',

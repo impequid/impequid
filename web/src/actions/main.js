@@ -6,6 +6,21 @@ var actions = {
 		dispatcher.dispatch({
 			type: constants.LOGOUT
 		});
+	},
+	connect: function connect () {
+		dispatcher.dispatch({
+			type: constants.CONNECT
+		});
+	},
+	handleDisconnect: function handleDisconnect () {
+		dispatcher.dispatch({
+			type: constants.HANDLE_DISCONNECT
+		});
+	},
+	reconnect: function reconnect () {
+		dispatcher.dispatch({
+			type: constants.RECONNECT
+		});
 	}
 };
 
