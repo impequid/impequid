@@ -106,23 +106,35 @@ var app = express();
 
 	app.use(vhost('*', forwarder));
 
+// servers
+var servers = {};
+
 // http
-var httpServer = http.createServer(app).listen(config.http.port, function () {
-	log.info('HTTP is running on port ' + config.http.port);
-});
+if (config.http.enabled) {
+	servers.http = http.createServer(app).listen(config.http.port, function () {
+		log.info('HTTP is running on port ' + config.http.port);
+	});
+}
 
 // https
-var httpsServer = https.createServer({
-	key: config.https.privateKey,
-	cert: config.https.certificate
-}, app).listen(config.https.port, function () {
-	log.info('HTTPS is running on port ' + config.https.port);
-});
+if (config.https.enabled) {
+	servers.https = https.createServer({
+		key: config.https.privateKey[1],
+		cert: config.https.certificate[1]
+	}, app).listen(config.https.port, function () {
+		log.info('HTTPS is running on port ' + config.https.port);
+	});
+}
 
+// check if any server is enabled
+if (!servers.http && !servers.https) {
+	log.critical('Neither HTTP nor HTTPS are enabled. Please enable at least one to allow websockets to work.');
+	process.exit(1);
+}
 
 // export
 module.exports = {
 	getServers: function () {
-		return [httpServer, httpsServer];
+		return servers;
 	}
 };

@@ -25,7 +25,7 @@ var io;
 function init (servers) {
 	// bind server
 	io = sio();
-	for (var i = 0; i < servers.length; i++) {
+	for (var i in servers) {
 		io.attach(servers[i]);
 	}
 
