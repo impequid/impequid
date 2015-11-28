@@ -85,6 +85,7 @@
     "socket.io-events": "^0.4.6",
     "socket.io-stream": "^0.8.0",
     "vhost": "^3.0.1",
-    "yamljs": "^0.2.3"
+    "yamljs": "^0.2.3",
+    "notion": "0.x"
   }
 }

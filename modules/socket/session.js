@@ -5,7 +5,7 @@ var log = require('../log').createNamespace({
 	name: 'socket-session'
 });
 var filesystem = require('../socket/filesystem');
-var Notion = require('../../../notion');
+var Notion = require('notion');
 
 var notion = new Notion(db.connection, {
 	pepper: config.crypto.pepper,
