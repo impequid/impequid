@@ -2,21 +2,21 @@
 var React = require('react');
 var Router = require('react-router');
 
-var actions = require('../actions/main');
+var actions = require('./actions/main');
 
 // routes
-var App = require('./app.jsx');
-var AppLoader = require('./app-loader.jsx');
+var App = require('./components/app.jsx');
+var AppLoader = require('./components/app-loader.jsx');
 
-var Dashboard = require('./dashboard.jsx');
-var Login = require('./login/layout.jsx');
-var Register = require('./login/register.jsx');
-var LoginMain = require('./login/login.jsx');
+var Dashboard = require('./components/dashboard.jsx');
+var Login = require('./components/login/layout.jsx');
+var Register = require('./components/login/register.jsx');
+var LoginMain = require('./components/login/login.jsx');
 
-var Settings = require('./settings.jsx');
+var Settings = require('./components/settings.jsx');
 
 // activate stores
-var notificationStore = require('../stores/notification.js');
+var notificationStore = require('./stores/notification.js');
 
 // setup routes
 var routes = (

@@ -1,10 +1,10 @@
 node_modules/
-web/dist/
+web/build/
 web/lib/
 web/static/
 log/
 Thumbs.db
-apps/*/web/dist
+apps/*/web/build
 files/*
 
 # config-files
@@ -14,4 +14,4 @@ config/*/
 !config/travis/
 
 # custom-apps
-custom/*/web/dist/
+custom/*/web/build/

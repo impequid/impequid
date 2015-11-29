@@ -73,6 +73,7 @@
     "map-stream": "0.0.6",
     "mongoose": "^4.0.7",
     "multiconfig": "^1.1.0",
+    "notion": "0.x",
     "object-assign": "^4.0.1",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
@@ -85,7 +86,6 @@
     "socket.io-events": "^0.4.6",
     "socket.io-stream": "^0.8.0",
     "vhost": "^3.0.1",
-    "yamljs": "^0.2.3",
-    "notion": "0.x"
+    "yamljs": "^0.2.3"
   }
 }

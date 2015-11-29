@@ -2,6 +2,7 @@ var express = require('express');
 var cors = require('cors');
 var session = require('../sessions').session;
 var config = require('../config');
+var path = require('path');
 
 var log = require('../log').createNamespace({
 	name: 'http-os'
@@ -23,6 +24,6 @@ app.use(cors(corsOptions));
 app.use(session);
 
 // static files
-app.use(express.static(config.root + '/web/dist'));
+app.use(express.static(path.join(config.root, config.build.path)));
 
 module.exports = app;

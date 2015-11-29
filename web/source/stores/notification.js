@@ -60,10 +60,10 @@ function notifyMe() {
 	}
 }
 
-notifyMe();
-var n = new Notification('Hello world!', {
-	body: 'This is not a test.',
-	icon: 'images/icon.png'
-});
+// notifyMe();
+// var n = new Notification('Hello world!', {
+// 	body: 'This is not a test.',
+// 	icon: 'images/icon.png'
+// });
 
 module.exports = store;

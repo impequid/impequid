@@ -43,21 +43,7 @@ for (var i = 0; i < appNames.length; i++) {
 			res.sendFile(path.join(filesystemRoot, req.session.user.id, cleanPath(req.params[0])));
 		}
 	});
-	apps[name].router.use(express.static(path.join(config.root, config.applications.path, name , '/web/dist')));
-}
-
-// custom
-
-var customNames = fs.readdirSync(path.join(config.root, config.custom.path)).filter(function (file) {
-	return fs.statSync(path.join(config.root, config.custom.path, file)).isDirectory();
-});
-var custom = {};
-
-for (var j = 0; j < customNames.length; j++) {
-	var name = customNames[j];
-	custom[name] = {};
-	custom[name].router = require(path.join(config.root, config.custom.path, name));
-	custom[name].router.use(express.static(path.join(config.root, config.custom.path, name, '/web/dist')));
+	apps[name].router.use(express.static(path.join(config.root, config.applications.path, name, config.build.path)));
 }
 
 // static files
@@ -92,14 +78,6 @@ var app = express();
 	// apps
 	for (var i in apps) {
 		app.use(vhost(i + '.' + config.host.name, apps[i].router));
-	}
-
-	// custom
-	for (var j in custom) {
-		if (j === 'main') {
-			app.use(vhost(config.host.name, custom[j].router));
-		}
-		app.use(vhost(j + '.' + config.host.name, custom[j].router));
 	}
 
 	// wildcard
