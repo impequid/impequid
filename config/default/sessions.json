@@ -1,6 +1,0 @@
-{
-    "secret": "defaultsecret",
-    "resave": true,
-    "saveUninitialized": true,
-    "password": "defaultpassword"
-}

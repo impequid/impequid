@@ -1,17 +1,3 @@
 node_modules/
 web/build/
-web/lib/
-web/static/
-log/
-Thumbs.db
-apps/*/web/build
-files/*
-
-# config-files
-config/*/
-!config/
-!config/default/
-!config/travis/
-
-# custom-apps
-custom/*/web/build/
+.gitignore
