@@ -63,7 +63,7 @@ gulp.task('download-semantic-js', function () {
 
 // copy
 
-gulp.task('copy-all', ['copy-main', 'copy-files', 'copy-notes', 'copy-css']);
+gulp.task('copy-all', ['copy-main', 'copy-css']);
 
 // copy-css
 gulp.task('copy-css', function () {
@@ -90,37 +90,9 @@ gulp.task('copy-main-images', function () {
 		.pipe(gulp.dest(config.build.path + 'images'));
 });
 
-// copy-files
-
-gulp.task('copy-files', ['copy-files-html']);
-
-gulp.task('copy-files-html', function () {
-	return gulp.src(config.applications.path + '/files/' + config.build.source + config.build.index)
-		.pipe(replace('»jquery«', resource.jquery))
-		.pipe(replace('»socket.io«', resource['socket.io']))
-		.pipe(replace('»custom.css«', resource['custom.css']))
-		.pipe(replace('»semantic.js«', resource['semantic.js']))
-		.pipe(replace('»semantic.css«', resource['semantic.css']))
-		.pipe(gulp.dest(config.applications.path + '/files/' + config.build.path));
-});
-
-// copy-notes
-
-gulp.task('copy-notes', ['copy-notes-html']);
-
-gulp.task('copy-notes-html', function () {
-	return gulp.src(config.applications.path + '/notes/' + config.build.source + config.build.index)
-		.pipe(replace('»jquery«', resource.jquery))
-		.pipe(replace('»socket.io«', resource['socket.io']))
-		.pipe(replace('»custom.css«', resource['custom.css']))
-		.pipe(replace('»semantic.js«', resource['semantic.js']))
-		.pipe(replace('»semantic.css«', resource['semantic.css']))
-		.pipe(gulp.dest(config.applications.path + '/notes/' + config.build.path));
-});
-
 // build
 
-gulp.task('build-all', ['build-main', 'build-files', 'build-notes']);
+gulp.task('build-all', ['build-main']);
 
 gulp.task('build-main', function () {
 	return gulp.src(config.build.source + config.build.main)
@@ -129,30 +101,9 @@ gulp.task('build-main', function () {
 		.pipe(gulp.dest(config.build.path));
 });
 
-gulp.task('build-files', function () {
-	return gulp.src(config.applications.path + '/files/' + config.build.source + config.build.main)
-		.pipe(browserify({
-			transform: [reactify]
-		}))
-		.pipe(rename(renameOptions))
-		.pipe(gulp.dest(config.applications.path + '/files/' + config.build.path));
-});
-
-gulp.task('build-notes', function () {
-	return gulp.src(config.applications.path + '/notes/' + config.build.source + config.build.main)
-		.pipe(browserify({
-			transform: [reactify]
-		}))
-		.pipe(rename(renameOptions))
-		.pipe(gulp.dest(config.applications.path + '/notes/' + config.build.path));
-});
 
 // tasks
 
 gulp.task('complete', ['download-all', 'copy-all', 'build-all']);
 
 gulp.task('default', ['copy-main', 'build-main']);
-
-gulp.task('files', ['copy-files-html', 'build-files']);
-
-gulp.task('notes', ['copy-notes-html', 'build-notes']);
