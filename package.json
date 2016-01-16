@@ -12,5 +12,18 @@
 	"bugs": {
 		"url": "https://github.com/dodekeract/impequid/issues"
 	},
-	"homepage": "https://github.com/dodekeract/impequid#readme"
+	"homepage": "https://github.com/dodekeract/impequid#readme",
+	"dependencies": {
+		"babelify": "^7.2.0",
+		"browser-sync": "^2.11.0",
+		"browserify": "^13.0.0",
+		"exorcist": "^0.4.0",
+		"gulp": "^3.9.0",
+		"gulp-rename": "^1.2.2",
+		"gulp-replace": "^0.5.4",
+		"gulp-util": "^3.0.7",
+		"react": "^0.14.6",
+		"vinyl-source-stream": "^1.1.0",
+		"watchify": "^3.7.0"
+	}
 }
