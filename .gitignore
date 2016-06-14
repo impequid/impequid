@@ -1,2 +1,3 @@
 node_modules/
-web/build/
+build/
+npm-debug.log
