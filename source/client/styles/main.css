@@ -1,0 +1,11 @@
+/* custom */
+.custom-noradius {
+	border-radius: 0;
+}
+
+/* center recaptcha */
+.register, .login {
+	margin-left: auto;
+	margin-right: auto;
+	width: 304px;
+}
