@@ -9,3 +9,31 @@
 	margin-right: auto;
 	width: 304px;
 }
+
+/* typography */
+.custom-text-center {
+	text-align: center;
+}
+
+/* about */
+.custom-about .col-lg-6 {
+	margin-bottom: 1.5rem;
+	text-align: center;
+}
+.custom-about h2 {
+	font-weight: normal;
+	margin-top: .75rem;
+}
+.custom-about .col-lg-6 p {
+	margin-right: .75rem;
+	margin-left: .75rem;
+}
+
+/* modify bootstrap */
+.navbar {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}

@@ -9,16 +9,15 @@ import loginActions from '../actions/login';
 import loginStore from './login';
 
 // instances
-import dispatcher from '../dispatchers/main';
-import constants from '../constants/main';
-import actions from '../actions/main';
+import dispatcher from '../dispatchers/authenticate';
+import constants from '../constants/authenticate';
+import actions from '../actions/authenticate';
 
 const _state = {
-	login: loginStore.getState(),
-	apps: []
+	login: loginStore.getState()
 };
 
-class MainStore extends Store {
+class AuthenticateStore extends Store {
 	constructor () {
 		super();
 	}
@@ -28,18 +27,16 @@ class MainStore extends Store {
 	}
 }
 
-const store = new MainStore();
+const store = new AuthenticateStore();
 
 dispatcher.register(action => {
-	console.info('main-store', action.type);
+	console.info('authenticate-store', action.type);
 
 	switch (action.type) {
 		case constants.HYDRATE:
-			_state.apps = action.data.apps;
+			_state.app = action.data.app;
+			_state.serverName = action.data.serverName;
 			loginActions.hydrate(action.data.login);
-		break;
-		case constants.UPDATE_APPS:
-			_state.apps = action.data;
 		break;
 	}
 

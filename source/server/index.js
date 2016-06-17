@@ -5,12 +5,20 @@ import http from 'http';
 import koa from 'koa';
 import koaStatic from 'koa-static';
 import koaSession from 'koa-generic-session';
+import mongoose from 'mongoose';
 import MongooseStore from 'koa-session-mongoose';
 
 // import internal
 
 import config from './config';
-import router from './router';
+import router from './routes';
+
+// mongoose
+
+mongoose.Promise = Promise;
+mongoose.connect(config.mongo.url, (error) => {
+	if (error) console.error(`could not connect to mongo ${error}`);
+});
 
 // koa
 

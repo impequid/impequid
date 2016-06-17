@@ -1,8 +1,8 @@
-const config = {
+const defaultConfig = {
 	listenAddress: '0.0.0.0',
 	port: 44400,
 	session: {
-		"keys": ["secret", "key"],
+		"keys": [],
 		duration: 86400 * 90
 	},
 	"reCaptcha": {
@@ -10,9 +10,20 @@ const config = {
 		"public": ""
 	},
 	mongo: {
-		url: 'mongodb://'
+		url: 'mongodb://localhost/impequid'
 	},
-	serverName: 'default impequid server'
+	serverName: ''
 };
+
+let customConfig;
+
+try {
+	customConfig = require('../../config.json');
+} catch (error) {
+	console.error('could not load config.json');
+	customConfig = {};
+}
+
+const config = Object.assign({}, defaultConfig, customConfig);
 
 export default config;

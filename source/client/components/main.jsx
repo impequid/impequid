@@ -1,17 +1,18 @@
 // external
+import React from 'react';
 import {RouterMixin, navigate} from 'react-mini-router';
 
 // internal
-import actions from '../../actions/main';
-import store from '../../stores/main';
+import actions from '../actions/main';
+import store from '../stores/main';
 
 // components
-import Header from '../../components/header';
-import Footer from '../../components/footer';
-import Login from '../../components/login';
-import Register from '../../components/register';
-import About from '../../components/about';
-import Dashboard from '../../components/dashboard';
+import Header from '../components/header';
+import Footer from '../components/footer';
+import Login from '../components/login';
+import Register from '../components/register';
+import About from '../components/about';
+import Dashboard from '../components/dashboard';
 
 const App = React.createClass({
 	mixins: [RouterMixin],
@@ -36,7 +37,7 @@ const App = React.createClass({
 	render () {
 		return (
 			<div>
-				<Header state={this.state} actions={actions}/>
+				<Header active={this.state.path} state={this.state.login} actions={actions.login}/>
 				{this.renderCurrentRoute()}
 				<Footer/>
 			</div>
@@ -44,28 +45,28 @@ const App = React.createClass({
 	},
 
 	about () {
-		isLoggedIn(false);
+		isLoggedIn(this.state.login.valid, false);
 		return <About/>
 	},
 
 	login () {
-		isLoggedIn(false);
+		isLoggedIn(this.state.login.valid, false);
 		return (
 			<Login actions={actions.login} state={this.state.login}/>
 		);
 	},
 
 	register () {
-		isLoggedIn(false);
+		isLoggedIn(this.state.login.valid, false);
 		return (
 			<Register actions={actions.login} state={this.state.login}/>
 		)
 	},
 
 	dashboard () {
-		isLoggedIn(true);
+		isLoggedIn(this.state.login.valid, true);
 		return (
-			<Dashboard/>
+			<Dashboard state={this.state}/>
 		);
 	},
 
@@ -75,15 +76,10 @@ const App = React.createClass({
 
 });
 
-function isLoggedIn (loginOnly) {
-	const loggedIn = store.getState().user.loggedIn;
-	if (loginOnly !== loggedIn) navigate(loggedIn ? '/dashboard' : '/login');
+function isLoggedIn (loggedIn, loginOnly) {
+	setTimeout(() => {
+		if (loginOnly !== loggedIn) navigate(loggedIn ? '/dashboard' : '/login');
+	}, 0);
 }
 
-window.onload = () => {
-	actions.login.verify();
-	ReactDOM.render(
-		<App/>,
-		document.getElementById('app')
-	);
-};
+export default App;

@@ -1,60 +1,36 @@
 // import external
-import {default as mongoose, Schema} from 'mongoose';
 import crypto from 'crypto';
-import {isEmail, isAlphanumeric, isHexadecimal} from 'validator';
 
 // import internal
-import config from './config';
-
-// connect database
-mongoose.connect(config.mongo.url, (error) => {
-	if (error) console.error(`could not connect to mongo ${error}`);
-});
-mongoose.Promise = Promise;
-
-// user schema
-const userSchema = new Schema({
-	name: {
-		type: String,
-		required: true,
-		unique: true,
-		validate: [isAlphanumeric, 'invalid username']
-	},
-	email: {
-		type: String,
-		required: true,
-		validate: [(data) => {
-			// why the fuck does this fix work
-			return isEmail(data);
-		}, 'invalid email']
-	},
-	password: {
-		type: String,
-		required: true,
-		validate: [isHexadecimal, 'invalid password']
-	},
-	salt: {
-		type: String,
-		required: true,
-		validate: [isHexadecimal, 'invalid salt']
-	}
-});
-
-const User = mongoose.model('user', userSchema);
+import config from '../config';
+import {User} from './models';
 
 // helper functions
 function hashPassword (password, salt) {
 	return crypto.createHash('sha512').update(`${salt}${password}`).digest('hex');
 }
 
+export function getUser (options) {
+	return new Promise((resolve, reject) => {
+		User.findOne({
+			name: options.name
+		}, (error, user) => {
+			if (!error) {
+				resolve(user);
+			} else {
+				reject('not found');
+			}
+		});
+	});
+}
+
 // exported functions
 export function login (options) {
 	return new Promise((resolve, reject) => {
-		User.find({
+		User.findOne({
 			name: options.name
-		}, (err, users) => {
-			if (!err && users.length === 1) {
-				const user = users[0];
+		}, (err, user) => {
+			if (!err) {
 				if (hashPassword(options.password, user.salt) === user.password) {
 					resolve(user);
 				} else {
@@ -72,7 +48,7 @@ export function register (options) {
 		const salt = crypto.randomBytes(16).toString('hex');
 		const hashed = hashPassword(options.password, salt);
 
-		let user = new User({
+		const user = new User({
 			name: options.name,
 			password: hashed,
 			email: options.email,
@@ -89,6 +65,7 @@ export function register (options) {
 }
 
 const exported = {
+	getUser,
 	login,
 	register
 };

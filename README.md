@@ -27,3 +27,11 @@ Since this is a quite early release, you currently have to manually edit `source
 ## Starting
 
 - `npm run start`
+
+## Documentation
+
+See [here](https://github.com/dodekeract/impequid/tree/master/documentation).
+
+## License
+
+See [here](https://github.com/dodekeract/impequid/tree/master/documentation/license.md).
