@@ -13,7 +13,7 @@ export function get (token) {
 		Token.findOne({
 			id: token
 		}, (error, data) => {
-			if (!error && data !== null) {
+			if (!error) {
 				resolve({
 					app: data.app,
 					user: data.user,

@@ -6,6 +6,7 @@ import koaBody from 'koa-body';
 // import internal
 
 import userDatabase from '../../database/users';
+import {applyLogin} from '../../utilities';
 
 // add routes
 
@@ -35,6 +36,7 @@ router.post('/login', body, function * () {
 		applyLogin(this.session, user);
 		this.redirect(this.headers.referer);
 	}).catch(error => {
+		console.error(error);
 		this.body = 'something went wrong';
 		this.status = 401;
 	});

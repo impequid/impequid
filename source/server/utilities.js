@@ -10,13 +10,12 @@ import ShortTermMemory from 'short-term-memory';
 export const fakeISPData = new Map();
 fakeISPData.set('dns.smartfl.at', {
 	url: 'https://dns.smartfl.at',
-	returnUrl: 'https://dns.smartfl.at/authenticate/:token@:server',
+	returnUrl: 'https://dns.smartfl.at/api/authenticate/:token@:server',
 	name: 'Smartflat DynDNS',
 	author: {
 		name: 'dodekeract',
 		url: 'https://github.com/dodekeract'
-	},
-	permissions: ['name', 'notify']
+	}
 });
 
 /**

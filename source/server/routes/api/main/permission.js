@@ -5,7 +5,7 @@ import koaRouter from 'koa-router';
 // import internal
 
 import permissionDatabase from '../../../database/permissions';
-import {loginify} from '../../utilities';
+import {loginify} from '../../../utilities';
 
 // routes
 

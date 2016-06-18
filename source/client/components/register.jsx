@@ -34,8 +34,8 @@ export default class Register extends React.Component {
 						</fieldset>
 						<fieldset className="form-group">
 							<label htmlFor="registerCheckbox">Legal Stuff</label><br/>
-							<input id="registerCheckbox" type="checkbox" onChange={actions.updateAccepted} checked={state.accepted} required/> I accept the <a href="/privacy" target="_blank">Privacy Policy</a> and <a href="/terms-of-service" target="_blank">Terms Of Service</a><br/>
-							<small className="text-muted">TLDR: Your data is used to make impequid work.</small>
+							<input id="registerCheckbox" type="checkbox" onChange={actions.updateAccepted} checked={state.accepted} required/> I accept the <a href="https://github.com/dodekeract/impequid/tree/master/documentation/privacy-policy.md" target="_blank">Privacy Policy</a> and <a href="https://github.com/dodekeract/impequid/tree/master/documentation/terms-of-service.md" target="_blank">Terms Of Service</a><br/>
+							<small className="text-muted">TLDR: Your data is used to make {state.name} work.</small>
 						</fieldset>
 						<button className="btn btn-lg btn-primary btn-block" type="submit">Create Free Account</button>
 					</form>

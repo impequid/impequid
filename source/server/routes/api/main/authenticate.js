@@ -5,7 +5,7 @@ import koaRouter from 'koa-router';
 
 // import internal
 
-import {acceptTokenStore, fakeISPData, loginify} from '../../utilities';
+import {acceptTokenStore, fakeISPData, loginify} from '../../../utilities';
 import config from '../../../config';
 import tokenDatabase from '../../../database/tokens';
 import permissionDatabase from '../../../database/permissions';

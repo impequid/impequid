@@ -8,7 +8,7 @@ import React from 'react';
 
 import userDatabase from '../../database/users';
 import config from '../../config';
-import {fakeISPData} from '../utilities';
+import {fakeISPData} from '../../utilities';
 
 // components
 

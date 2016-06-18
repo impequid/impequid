@@ -8,7 +8,7 @@ import async from 'async';
 // import internal
 
 import userDatabase from '../../../database/users';
-import {fakeISPData, applyLogin} from '../../utilities';
+import {fakeISPData, applyLogin} from '../../../utilities';
 
 // routes
 

@@ -8,7 +8,7 @@ import crypto from 'crypto';
 // import internal
 
 import config from '../../config';
-import {acceptTokenStore, fakeISPData} from '../utilities';
+import {acceptTokenStore, fakeISPData} from '../../utilities';
 
 // components
 

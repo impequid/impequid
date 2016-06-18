@@ -6,7 +6,7 @@ import koaBody from 'koa-body';
 // import internal
 
 import tokenDatabase from '../../../database/tokens';
-import {loginify} from '../../utilities';
+import {loginify} from '../../../utilities';
 
 // routes
 
