@@ -11,7 +11,16 @@ export const fakeISPData = new Map();
 fakeISPData.set('dns.smartfl.at', {
 	url: 'https://dns.smartfl.at',
 	returnUrl: 'https://dns.smartfl.at/api/authenticate/:token@:server',
-	name: 'Smartflat DynDNS',
+	name: 'SmartFlat DynDNS',
+	author: {
+		name: 'dodekeract',
+		url: 'https://github.com/dodekeract'
+	}
+});
+fakeISPData.set('dodekeract.smartfl.at:8080', {
+	url: 'http://dodekeract.smartfl.at:8080',
+	returnUrl: 'https://dodekeract.smartfl.at:8080/api/authenticate/:token@:server',
+	name: 'SmartFlat DynDNS Development Server',
 	author: {
 		name: 'dodekeract',
 		url: 'https://github.com/dodekeract'
