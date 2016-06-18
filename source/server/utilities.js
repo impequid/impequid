@@ -19,7 +19,7 @@ fakeISPData.set('dns.smartfl.at', {
 });
 fakeISPData.set('dodekeract.smartfl.at:8080', {
 	url: 'http://dodekeract.smartfl.at:8080',
-	returnUrl: 'https://dodekeract.smartfl.at:8080/api/authenticate/:token@:server',
+	returnUrl: 'http://dodekeract.smartfl.at:8080/api/authenticate/:token@:server',
 	name: 'SmartFlat DynDNS Development Server',
 	author: {
 		name: 'dodekeract',
