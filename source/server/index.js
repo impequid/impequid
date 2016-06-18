@@ -8,17 +8,28 @@ import koaSession from 'koa-generic-session';
 import mongoose from 'mongoose';
 import MongooseStore from 'koa-session-mongoose';
 
-// import internal
+// config
 
 import config from './config';
-import router from './routes';
 
 // mongoose
 
 mongoose.Promise = Promise;
-mongoose.connect(config.mongo.url, (error) => {
-	if (error) console.error(`could not connect to mongo ${error}`);
+mongoose.set('debug', true);
+mongoose.connection.on('error', error => {
+	console.error('mongoose error', error);
 });
+mongoose.connect(config.mongo.url, (error) => {
+	if (error) {
+		console.error(`could not connect to mongo ${error}`);
+	} else {
+		console.log('connected to mongodb');
+	}
+});
+
+// import internal
+
+import router from './routes';
 
 // koa
 

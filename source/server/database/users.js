@@ -30,7 +30,7 @@ export function login (options) {
 		User.findOne({
 			name: options.name
 		}, (err, user) => {
-			if (!err) {
+			if (!err && user !== null) {
 				if (hashPassword(options.password, user.salt) === user.password) {
 					resolve(user);
 				} else {
@@ -55,11 +55,15 @@ export function register (options) {
 			salt: salt
 		});
 
-		user.save().then(() => {
-			console.log(`user ${options.name} created`);
-			resolve(user);
-		}).catch(error => {
-			reject('duplicate or invalid');
+		// fix mongoose weirdness
+		user.$__save({}, (error, user) => {
+			if (!error) {
+				console.log(`user ${options.name} created`);
+				resolve(user);
+			} else {
+				console.error(error);
+				reject('duplicate or invalid');
+			}
 		});
 	});
 }

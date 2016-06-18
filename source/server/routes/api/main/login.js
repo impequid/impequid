@@ -8,7 +8,8 @@ import async from 'async';
 // import internal
 
 import userDatabase from '../../../database/users';
-import {fakeISPData, applyLogin} from '../../../utilities';
+import {fakeISPData, applyLogin, getIP} from '../../../utilities';
+import config from '../../../config';
 
 // routes
 
@@ -86,6 +87,7 @@ router.post('/', body, function * () {
 	try {
 		const user = yield new Promise((resolve, reject) => {
 			async.series([callback => {
+				console.log('verifying captcha');
 				// verify captcha
 				reCaptchaValidator.promise(config.reCaptcha.secret, captcha, ip).then(() => {
 					callback(null, 'valid captcha');
@@ -93,6 +95,7 @@ router.post('/', body, function * () {
 					callback(['captcha failed', 403]);
 				});
 			}, callback => {
+				console.log('attempting registration');
 				// attempt registration
 				userDatabase.register({
 					name,
@@ -104,6 +107,7 @@ router.post('/', body, function * () {
 					callback(['registration failed', 400]);
 				});
 			}, callback => {
+				console.log('attempting login');
 				// attempt login
 				userDatabase.login({
 					name,
@@ -114,6 +118,7 @@ router.post('/', body, function * () {
 					callback(['login failed', 404]);
 				});
 			}], (error, results) => {
+				console.log('finshed');
 				// resolve promise
 				if (!error) {
 					resolve(results[2]);
@@ -125,8 +130,9 @@ router.post('/', body, function * () {
 		this.body = 'success';
 		applyLogin(this.session, user);
 	} catch (error) {
-		this.body = error[0];
-		this.status = error[1];
+		console.error(error);
+		this.body = 'something went wrong';
+		this.status = 500;
 	}
 });
 

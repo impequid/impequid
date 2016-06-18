@@ -12,7 +12,7 @@ export default class Register extends React.Component {
 						<h2>Create An Account</h2>
 						<fieldset className="form-group">
 							<label htmlFor="registerName">Username</label>
-							<input id="registerName" value={state.name} onChange={actions.updateName} type="text" name="name" className="form-control" placeholder="Username" required autofocus/>
+							<input id="registerName" value={state.name} onChange={actions.updateName} type="text" name="username" className="form-control" placeholder="Username" required autofocus/>
 							<small className="text-muted">This may be shown publically.</small>
 						</fieldset>
 						<fieldset className="form-group">
