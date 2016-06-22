@@ -37,7 +37,7 @@ router.get('/accept/:token', function * () {
 				permissions
 			});
 
-			k.redirect(returnUrl.replace(':token', token).replace(':server', config.serverName));
+			k.redirect(returnUrl.replace(':token', 'n' + token).replace(':server', config.serverName));
 		} else {
 			k.body = {
 				error: 'token expired, please try again'

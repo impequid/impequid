@@ -8,16 +8,17 @@ import {Token} from './models';
 /**
  * @desciption returns the associated data for a tokenDatabase
  */
-export function get (token) {
+export function get ({id}) {
 	return new Promise((resolve, reject) => {
 		Token.findOne({
-			id: token
+			id
 		}, (error, data) => {
 			if (!error && data !== null) {
 				resolve({
 					app: data.app,
 					user: data.user,
-					id: data.id
+					id: data.id,
+					type: 'normal'
 				});
 			} else {
 				reject('not found');
@@ -29,10 +30,10 @@ export function get (token) {
 /**
  * @description compiles a list of all tokens of a user
  */
-export function getAll (user) {
+export function getAll ({id}) {
 	return new Promise((resolve, reject) => {
 		Token.find({
-			user: user.id
+			user: id
 		}, (error, tokens) => {
 			if (!error) {
 				resolve(tokens.map(token => {
@@ -52,11 +53,11 @@ export function getAll (user) {
 /**
  * @description removes the given token
  */
-export function remove (options) {
+export function remove ({token, user}) {
 	return new Promise ((resolve, reject) => {
 		Token.findOneAndRemove({
-			id: options.token,
-			user: options.user.id
+			id: token,
+			user: user.id
 		}, error => {
 			if (!error) {
 				resolve();
@@ -70,9 +71,7 @@ export function remove (options) {
 /**
  * @description creates a new token, removes old token
  */
-export function add (options) {
-	const {user, app} = options;
-
+export function add ({user, app}) {
 	return new Promise ((resolve, reject) => {
 		Token.remove({
 			app,

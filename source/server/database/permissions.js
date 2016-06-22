@@ -29,6 +29,26 @@ export function getAll (user) {
 }
 
 /**
+ * @description gets the permissions for a given app and user
+ */
+export function get ({user, app}) {
+	return new Promise((resolve, reject) => {
+		Permission.findOne({
+			user,
+			app
+		}, (error, entry) => {
+			if (!error && entry !== null) {
+				resolve(entry.permissions);
+			} else if (entry === null) {
+				reject('not found');
+			} else {
+				reject('something went wrong');
+			}
+		});
+	});
+}
+
+/**
  * @description removes the given Permission
  */
 export function remove (options) {
@@ -51,9 +71,7 @@ export function remove (options) {
 /**
  * @description creates a new permission, adds new permissions
  */
-export function add (options) {
-	const {user, app, permissions} = options;
-
+export function add ({user, app, permissions}) {
 	return new Promise ((resolve, reject) => {
 		Permission.findOne({
 			app,
@@ -61,11 +79,7 @@ export function add (options) {
 		}).then((entry) => {
 			if (entry !== null) {
 				// add new permissions
-				permissions.forEach(value => {
-					if (entry.permissions.indexOf(value) === -1) {
-						entry.permissions.push(value);
-					}
-				});
+				entry.permissions = permissions;
 
 				// save to database
 				entry.save().then(() => {
@@ -95,7 +109,8 @@ export function add (options) {
 const exported = {
 	getAll,
 	remove,
-	add
+	add,
+	get
 };
 
 export default exported;

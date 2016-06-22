@@ -10,11 +10,9 @@ function hashPassword (password, salt) {
 	return crypto.createHash('sha512').update(`${salt}${password}`).digest('hex');
 }
 
-export function getUser (options) {
+export function getUser (query) {
 	return new Promise((resolve, reject) => {
-		User.findOne({
-			name: options.name
-		}, (error, user) => {
+		User.findOne(query, (error, user) => {
 			if (!error) {
 				resolve(user);
 			} else {
@@ -25,13 +23,13 @@ export function getUser (options) {
 }
 
 // exported functions
-export function login (options) {
+export function login ({name, password}) {
 	return new Promise((resolve, reject) => {
 		User.findOne({
-			name: options.name
+			name
 		}, (err, user) => {
 			if (!err && user !== null) {
-				if (hashPassword(options.password, user.salt) === user.password) {
+				if (hashPassword(password, user.salt) === user.password) {
 					resolve(user);
 				} else {
 					reject('wrong password');

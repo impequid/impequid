@@ -24,11 +24,7 @@ export default class Authenticate extends React.Component {
 	}
 
 	render () {
-		const permissions = [];
 		let key = 0;
-		this.state.app.permissions.forEach((permission) => {
-			permissions.push(<li className="list-group-item" key={key++}>{permission}</li>);
-		});
 
 		const main = this.state.login.valid ? (
 			<main className="jumbotron custom-noradius">
@@ -37,7 +33,7 @@ export default class Authenticate extends React.Component {
 					<div className="alert alert-warning">
 						<a href={this.state.app.url}>{this.state.app.name}</a> <small className="text-muted">by <a href={this.state.app.author.url}>{this.state.app.author.name}</a></small> is requesting the following permissions:
 					</div>
-					<ul className="list-group">{permissions}</ul>
+					<ul className="list-group">{JSON.stringify(this.state.app.permissions)}</ul>
 					<br/>
 					<div className="btn-group" role="group" aria-label="Basic example">
 						<a type="button" className="btn btn-success" href={'/api/main/authenticate/accept/' + this.state.app.token}>Allow Access</a>
@@ -52,7 +48,7 @@ export default class Authenticate extends React.Component {
 					<div className="alert alert-warning">
 						<a href={this.state.app.url}>{this.state.app.name}</a> <small className="text-muted">by <a href={this.state.app.author.url}>{this.state.app.author.name}</a></small> is requesting the following permissions:
 					</div>
-					<ul className="list-group">{permissions}</ul>
+					<ul className="list-group">{JSON.stringify(this.state.app.permissions)}</ul>
 					<Login state={this.state.login} actions={actions}/>
 				</div>
 			</main>

@@ -25,15 +25,10 @@ export const userSchema = new Schema({
 		required: true,
 		validate: [isHexadecimal, 'invalid salt']
 	},
-	apps: [{
-		name: {
-			type: String,
-			required: true
-		},
-		permissions: {
-			type: Schema.Types.Mixed
-		}
-	}]
+	apps: {
+		type: [String],
+		default: []
+	}
 });
 
 export const tokenSchema = new Schema({
@@ -87,8 +82,8 @@ export const permissionSchema = new Schema({
 		required: true
 	},
 	permissions: {
-		type: [String],
-		default: []
+		type: Schema.Types.Mixed,
+		default: {}
 	}
 });
 permissionSchema.index({app: 1, user: 1}, {unique: true});

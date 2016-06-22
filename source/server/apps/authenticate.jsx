@@ -12,10 +12,11 @@ export default class ServerSideAuthenticate extends React.Component {
 		return (
 			<html>
 				<head>
-					<title>impequid</title>
+					<title>Impequid</title>
 					<script dangerouslySetInnerHTML={{__html: `var INITIAL_STATE = JSON.parse('${JSON.stringify(this.props.initialState)}');`}}/>
 					<meta charSet="utf-8"/>
 					<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+					<meta name="robots" content="noindex"/>
 
 					<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js" charSet="utf-8" crossOrigin="anonymous"></script>
 					<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js" charSet="utf-8" crossOrigin="anonymous"></script>

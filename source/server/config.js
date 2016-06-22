@@ -1,20 +1,3 @@
-const defaultConfig = {
-	listenAddress: '0.0.0.0',
-	port: 44400,
-	session: {
-		"keys": [],
-		duration: 86400 * 90
-	},
-	"reCaptcha": {
-		"secret": "",
-		"public": ""
-	},
-	mongo: {
-		url: 'mongodb://127.0.0.1:27017/impequid'
-	},
-	serverName: ''
-};
-
 let customConfig;
 
 try {
@@ -24,6 +7,31 @@ try {
 	customConfig = {};
 }
 
-const config = Object.assign({}, defaultConfig, customConfig);
+const config = Object.assign({
+	listen: {
+		address: '127.0.0.1',
+		port: 50000
+	},
+	session: {
+		"keys": [],
+		duration: 86400 * 90
+	},
+	"reCaptcha": {
+		"secret": "",
+		"public": ""
+	},
+	mongo: {
+		url: 'mongodb://127.0.0.1/impequid',
+		debug: false
+	},
+	server: {
+		domain: "example.domain",
+		name: "Impequid Server"
+	},
+	serviceProvider: {
+		url: 'https://services.impequid.com',
+		cache: true
+	}
+}, customConfig);
 
 export default config;

@@ -21,7 +21,7 @@ mongoose.connection.on('error', error => {
 });
 mongoose.connect(config.mongo.url, (error) => {
 	if (error) {
-		console.error(`could not connect to mongo ${error}`);
+		console.error(`could not connect to mongo: ${error}`);
 	} else {
 		console.log('connected to mongodb');
 	}
@@ -48,7 +48,7 @@ app.use(koaSession({
 	})
 }));
 
-// routes
+// configure app
 
 app
 	.use(koaStatic('build/client'))
@@ -77,8 +77,8 @@ app
 
 // start server
 
-server.listen(config.port, config.listenAddress);
+server.listen(config.listen.port, config.listen.address);
 
 server.on('listening', function () {
-	console.log(`listening on http://${config.listenAddress}:${config.port}`)
+	console.log(`listening on http://${config.listen.address}:${config.listen.port}`)
 });
