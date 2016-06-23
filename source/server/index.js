@@ -51,7 +51,7 @@ app.use(koaSession({
 // configure app
 
 app
-	.use(koaStatic('build/client'))
+	.use(koaStatic(`${__dirname}/../client`))
 	.use(router.routes())
 	.use(router.allowedMethods())
 	.use(function * (next) {
