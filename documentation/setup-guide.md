@@ -52,7 +52,7 @@ If you don't want to spend money for a SSL Certificate, you can get one from [le
 
 It is highly recommended to setup a reverse-proxy for Impequid. In this case we'll chose Nginx.
 
-You need to setup a Nginx reverse proxy from `https://impequid.example.server:443` to `http://127.0.0.1:44400`.
+You need to setup a Nginx reverse proxy from `https://impequid.example.server` to `http://127.0.0.1:50000`.
 
 ## Get ReCaptcha
 
