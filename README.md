@@ -3,7 +3,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 [![Code Climate](https://codeclimate.com/github/dodekeract/impequid/badges/gpa.svg)](https://codeclimate.com/github/dodekeract/impequid)
 [![NPM Downloads](https://img.shields.io/npm/dm/impequid.svg)](https://npmjs.com/package/impequid)
-[![NPM Dependencies](https://david-dm.org/dodekeract/impequid.svg)]((https://david-dm.org/dodekeract/impequid)
+[![NPM Dependencies](https://david-dm.org/dodekeract/impequid.svg)](https://david-dm.org/dodekeract/impequid)
 [![Gitter Chatroom](https://badges.gitter.im/dodekeract/impequid.svg)](https://gitter.im/dodekeract/impequid)
 
 Impequid is a decentralized app-based cloud, which you can easily setup yourself. Apps are **completely separate** from Impequid, which means you can use every Impequid app, while it stores the data on your own server.
