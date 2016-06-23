@@ -46,10 +46,12 @@ router.get('/:app/:serializedTree', function * () {
 	// redirect if permissions are already granted
 
 	if (user.valid) {
-		const currentPermissions = yield permissionDatabase.get({user: user.id, app});
-		if (_.isEqual(currentPermissions, permissions)) {
-			return this.redirect(`/api/main/authenticate/accept/${token}`);
-		}
+		try {
+			const currentPermissions = yield permissionDatabase.get({user: user.id, app});
+			if (_.isEqual(currentPermissions, permissions)) {
+				return this.redirect(`/api/main/authenticate/accept/${token}`);
+			}
+		} catch (error) {}
 	}
 
 	// render app

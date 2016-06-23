@@ -42,8 +42,8 @@ export default class Header extends React.Component {
 					<a className="nav-link" href="/register">Register</a>
 				</li>
 			);
-			leftEntries.push(
-				<li key={leftKey++} className={"nav-item" + activeRoute('/login')}>
+			rightEntries.push(
+				<li key={rightKey++} className={"nav-item" + activeRoute('/login')}>
 					<a className="nav-link" href="/login">Login</a>
 				</li>
 			);

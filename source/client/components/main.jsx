@@ -21,7 +21,8 @@ const App = React.createClass({
 		'/': 'about',
 		'/register': 'register',
 		'/login': 'login',
-		'/dashboard': 'dashboard'
+		'/dashboard': 'dashboard',
+		'/profile': 'profile'
 	},
 
 	getInitialState: store.getState,
@@ -45,29 +46,48 @@ const App = React.createClass({
 	},
 
 	about () {
-		isLoggedIn(this.state.login.valid, false);
+		this.isLoggedIn(false);
 		return <About/>
 	},
 
 	login () {
-		isLoggedIn(this.state.login.valid, false);
+		this.isLoggedIn(false);
 		return (
 			<Login actions={actions.login} state={this.state.login}/>
 		);
 	},
 
 	register () {
-		isLoggedIn(this.state.login.valid, false);
+		this.isLoggedIn(false);
 		return (
 			<Register actions={actions.login} state={this.state.login}/>
 		)
 	},
 
 	dashboard () {
-		isLoggedIn(this.state.login.valid, true);
+		this.isLoggedIn(true);
 		return (
 			<Dashboard state={this.state}/>
 		);
+	},
+
+	profile () {
+		return (
+			<main>
+				<div className="jumbotron">
+					<div className="container">
+						<h1>Profile</h1>
+						soon
+					</div>
+				</div>
+			</main>
+		);
+	},
+
+	isLoggedIn (loginOnly) {
+		setTimeout(() => {
+			if (this.state.login.valid !== loginOnly) navigate(this.state.login.valid ? '/dashboard' : '/login');
+		}, 0);
 	},
 
 	onChange () {
@@ -75,11 +95,5 @@ const App = React.createClass({
 	}
 
 });
-
-function isLoggedIn (loggedIn, loginOnly) {
-	setTimeout(() => {
-		if (loginOnly !== loggedIn) navigate(loggedIn ? '/dashboard' : '/login');
-	}, 0);
-}
 
 export default App;
