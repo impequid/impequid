@@ -1,5 +1,7 @@
 # Impequid
 
+[![Join the chat at https://gitter.im/dodekeract/impequid](https://badges.gitter.im/dodekeract/impequid.svg)](https://gitter.im/dodekeract/impequid?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 [![Code Climate](https://codeclimate.com/github/dodekeract/impequid/badges/gpa.svg)](https://codeclimate.com/github/dodekeract/impequid)
 [![NPM Downloads](https://img.shields.io/npm/dm/impequid.svg)](https://npmjs.com/package/impequid)
